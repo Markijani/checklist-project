@@ -31,13 +31,13 @@ public class Form {
     private int result;
 
     @Column(name = "level_1_answers")
-    private Map<String, Integer> level1Answers = new HashMap<>();
+    private Map<Question, Answer> level1Answers = new HashMap<>();
 
     @Column(name = "level_2_answers")
-    private Map<String, Integer> level2Answers = new HashMap<>();
+    private Map<Question, Answer> level2Answers = new HashMap<>();
 
     @Column(name = "level_3_answers")
-    private Map<String, Integer> level3Answers = new HashMap<>();
+    private Map<Question, Answer> level3Answers = new HashMap<>();
 
     public Form (String userName, int groupNum) {
         this.userName = userName;
