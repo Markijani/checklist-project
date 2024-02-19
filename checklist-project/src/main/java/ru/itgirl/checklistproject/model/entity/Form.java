@@ -27,6 +27,9 @@ public class Form {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
+    @Column(name = "result")
+    private int result;
+
     @Column(name = "level_1_answers")
     private Map<String, Integer> level1Answers = new HashMap<>();
 
