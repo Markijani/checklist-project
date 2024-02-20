@@ -1,17 +1,22 @@
 package ru.itgirl.checklistproject.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Entity
 @Table(name = "forms")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Form {
 
     @Id
@@ -30,6 +35,8 @@ public class Form {
     @Column(name = "result")
     private int result;
 
+    private List <Answer> answers;
+
     @Column(name = "level_1_answers")
     private Map<Question, Answer> level1Answers = new HashMap<>();
 
@@ -44,16 +51,16 @@ public class Form {
         this.groupNum = groupNum;
         this.createdAt = LocalDateTime.now();
     }
-
-    public void addLevel1Answer(String question, Integer answer) {
-        level1Answers.put(question, answer);
-    }
-
-    public void addLevel2Answer(String question, Integer answer) {
-        level2Answers.put(question, answer);
-    }
-
-    public void addLevel3Answer(String question, Integer answer) {
-        level3Answers.put(question, answer);
-    }
+//
+//    public void addLevel1Answer(String question, Integer answer) {
+//        level1Answers.put(question, answer);
+//    }
+//
+//    public void addLevel2Answer(String question, Integer answer) {
+//        level2Answers.put(question, answer);
+//    }
+//
+//    public void addLevel3Answer(String question, Integer answer) {
+//        level3Answers.put(question, answer);
+//    }
 }
