@@ -20,6 +20,8 @@ public class Question {
     @Setter
     private String text;
 
+    private Level level;
+
     @OneToMany
     private Set<Suggestion> topics;
 }
