@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="init db" author="author name">
+        <sql>
+
+            Create table if not exists level (
+            id bigserial PRIMARY KEY,
+            name varchar NOT NULL
+            );
+
+            Create table if not exists answer (
+            id bigserial PRIMARY KEY,
+            value int NOT NULL,
+            question_id int NOT NULL,
+            form_id int NOT NULL,
+            FOREIGN KEY (question_id) REFERENCES question (id),
+            FOREIGN KEY (form_id) REFERENCES form (id)
+            );
+
+            Create table if not exists question (
+            id bigserial PRIMARY KEY,
+            text varchar NOT NULL,
+            level_id int NOT NULL,
+            FOREIGN KEY (level_id) REFERENCES level (id)
+            );
+
+            Create table if not exists questionnaire_question (
+            questionnaire_id int NOT NULL,
+            question_id int NOT NULL,
+            FOREIGN KEY (questionnaire_id) REFERENCES questionnaire (id),
+            FOREIGN KEY (question_id) REFERENCES question (id)
+            );
+
+            Create table if not exists questionnaire (
+            id bigserial PRIMARY KEY,
+            created_at data NOT NULL,
+            version_name varchar NOT NULL
+            );
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
