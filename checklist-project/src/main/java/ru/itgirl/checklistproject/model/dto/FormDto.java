@@ -14,5 +14,7 @@ public class FormDto {
     private int groupNum;
     private String createdAt;
     private int result;
-    private Map <String,Integer> answers;
+    private BeginnerDto beginner;
+    private JuniorDto junior;
+    private TraineeDto trainee;
 }
