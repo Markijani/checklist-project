@@ -4,5 +4,5 @@ import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
 
 public interface FormService {
-    FormDto createForm (FormCreateDto formCreateDto);
+    FormDto createForm(FormCreateDto formCreateDto);
 }

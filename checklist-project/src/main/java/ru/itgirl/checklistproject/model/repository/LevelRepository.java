@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import ru.itgirl.checklistproject.model.entity.Level;
 
 @Repository
-public interface LevelRepository extends JpaRepository <Level,Long> {
+public interface LevelRepository extends JpaRepository<Level, Long> {
 }

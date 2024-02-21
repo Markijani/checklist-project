@@ -18,7 +18,6 @@ import java.util.Map;
 @AllArgsConstructor
 @Builder
 public class Form {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,33 +33,4 @@ public class Form {
 
     @Column(name = "result")
     private int result;
-
-    private List <Answer> answers;
-
-    @Column(name = "level_1_answers")
-    private Map<Question, Answer> level1Answers = new HashMap<>();
-
-    @Column(name = "level_2_answers")
-    private Map<Question, Answer> level2Answers = new HashMap<>();
-
-    @Column(name = "level_3_answers")
-    private Map<Question, Answer> level3Answers = new HashMap<>();
-
-    public Form (String userName, int groupNum) {
-        this.userName = userName;
-        this.groupNum = groupNum;
-        this.createdAt = LocalDateTime.now();
     }
-//
-//    public void addLevel1Answer(String question, Integer answer) {
-//        level1Answers.put(question, answer);
-//    }
-//
-//    public void addLevel2Answer(String question, Integer answer) {
-//        level2Answers.put(question, answer);
-//    }
-//
-//    public void addLevel3Answer(String question, Integer answer) {
-//        level3Answers.put(question, answer);
-//    }
-}

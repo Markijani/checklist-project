@@ -9,19 +9,19 @@ import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 
 @Service
 @RequiredArgsConstructor
-public class AnswerServiceImpl implements AnswerService{
+public class AnswerServiceImpl implements AnswerService {
 
     private final FormRepository formRepository;
     private final AnswerRepository answerRepository;
     private final QuestionRepository questionRepository;
 
     @Override
-    public Answer createAnswer(Long form_id, String question_name, int value) {
+    public void createAnswer(Long form_id, String question_name, int value) {
         Answer answer = Answer.builder()
                 .form(formRepository.findById(form_id).orElseThrow())
                 .question(questionRepository.findQuestionByName(question_name).orElseThrow())
                 .value(value)
                 .build();
-        return answerRepository.save(answer);
+        answerRepository.save(answer);
     }
 }

@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -13,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BeginnerDto {
-    private List <String> setOfQuestions;
-    private List <Integer> currentRangeValues;
+    private List<String> setOfQuestions;
+    private List<Integer> currentRangeValues;
 }

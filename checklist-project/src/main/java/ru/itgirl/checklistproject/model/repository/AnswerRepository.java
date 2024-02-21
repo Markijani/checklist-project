@@ -10,5 +10,5 @@ import java.util.List;
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     // дописать Query
-    List<Answer> findAnswerByForm_id(Long id);
+    List<Answer> findAnswerByFormId(Long id);
 }

@@ -13,5 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class JuniorDto {
     private List<String> setOfQuestions;
-    private List <Integer> currentRangeValues;
+    private List<Integer> currentRangeValues;
 }

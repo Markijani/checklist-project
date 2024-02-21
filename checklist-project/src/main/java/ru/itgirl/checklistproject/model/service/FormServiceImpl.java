@@ -9,7 +9,6 @@ import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.FormRepository;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,14 +44,21 @@ public class FormServiceImpl implements FormService {
         }
 
         // получаем сохраненные вопросы
-        List<Answer> answers = answerRepository.findAnswerByForm_id(form_id);
-        int allValues = answers.stream().map(Answer::getValue).reduce(Integer::sum).orElseThrow();
+        List<Answer> answers = answerRepository.findAnswerByFormId(form_id);
+
         // добавляем результат в форму
+        int allValues = answers.stream().map(Answer::getValue).reduce(Integer::sum).orElseThrow();
         int result = allValues / (answers.size() * 5) * 100;
         initial_form.setResult(result);
+
+        //обновляем форму результатом
         Form savedForm = formRepository.save(initial_form);
 
-        // сортируем вопросы по уровням и сохраняем в дто два листа один с вопросами, второй с оценками
+        return convertEntityToDto(savedForm);
+    }
+
+    private FormDto convertEntityToDto(Form form) {
+        List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
         JuniorDto juniorDto = JuniorDto.builder()
                 .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
                         .equals("junior")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
@@ -71,13 +77,12 @@ public class FormServiceImpl implements FormService {
                 .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
                         .equals("beginner")).map(Answer::getValue).collect(Collectors.toList()))
                 .build();
-
         return FormDto.builder()
-                .id(savedForm.getId())
-                .username(savedForm.getUserName())
-                .groupNum(savedForm.getGroupNum())
-                .createdAt(savedForm.getCreatedAt().toString())
-                .result(savedForm.getResult())
+                .id(form.getId())
+                .username(form.getUserName())
+                .groupNum(form.getGroupNum())
+                .createdAt(form.getCreatedAt().toString())
+                .result(form.getResult())
                 .beginner(beginnerDto)
                 .trainee(traineeDto)
                 .junior(juniorDto)
