@@ -13,6 +13,13 @@
             name varchar NOT NULL
             );
 
+            Create table if not exists question (
+            id bigserial PRIMARY KEY,
+            text varchar NOT NULL,
+            level_id int NOT NULL,
+            FOREIGN KEY (level_id) REFERENCES level (id)
+            );
+
             Create table if not exists answer (
             id bigserial PRIMARY KEY,
             value int NOT NULL,
@@ -22,11 +29,10 @@
             FOREIGN KEY (form_id) REFERENCES form (id)
             );
 
-            Create table if not exists question (
+            Create table if not exists questionnaire (
             id bigserial PRIMARY KEY,
-            text varchar NOT NULL,
-            level_id int NOT NULL,
-            FOREIGN KEY (level_id) REFERENCES level (id)
+            created_at TIMESTAMP NOT NULL,
+            version_name varchar NOT NULL
             );
 
             Create table if not exists questionnaire_question (
@@ -34,12 +40,6 @@
             question_id int NOT NULL,
             FOREIGN KEY (questionnaire_id) REFERENCES questionnaire (id),
             FOREIGN KEY (question_id) REFERENCES question (id)
-            );
-
-            Create table if not exists questionnaire (
-            id bigserial PRIMARY KEY,
-            created_at data NOT NULL,
-            version_name varchar NOT NULL
             );
 
         </sql>
