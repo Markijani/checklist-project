@@ -5,7 +5,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "levels")
+@Table(name = "answer")
 @Builder
 @Getter
 @Entity
@@ -19,8 +19,10 @@ public class Answer {
     private int value;
 
     @ManyToOne
+    @JoinColumn(name = "form_id")
     private Form form;
 
     @ManyToOne
+    @JoinColumn(name = "question_id")
     private Question question;
 }

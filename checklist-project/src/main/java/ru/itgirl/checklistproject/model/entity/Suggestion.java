@@ -5,7 +5,7 @@ import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "suggestions")
+@Table(name = "suggestion")
 @Builder
 @Getter
 @Entity
@@ -21,4 +21,8 @@ public class Suggestion {
     @Column()
     @Setter
     private String link;
+
+    @ManyToOne
+    @JoinColumn(name = "question_id")
+    private Question question;
 }

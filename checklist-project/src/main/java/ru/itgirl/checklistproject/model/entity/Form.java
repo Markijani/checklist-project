@@ -6,11 +6,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 
 @Entity
-@Table(name = "forms")
+@Table(name = "form")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,15 +21,15 @@ public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "user_name")
+    @Column(nullable = false)
     private String userName;
 
-    @Column(name = "group_num")
+    @Column(nullable = false)
     private int groupNum;
 
-    @Column(name = "created_at")
+    @Column(nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(name = "result")
+    @Column(nullable = false)
     private int result;
     }
