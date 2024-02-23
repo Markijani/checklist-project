@@ -20,6 +20,9 @@ public class Question {
     @Setter
     private String text;
 
+    @Column(nullable = false)
+    private Boolean included;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
     private Level level;
@@ -27,9 +30,6 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private Set<Suggestion> topics;
 
-
-
-    private Boolean included;
-
-
+    @OneToMany(mappedBy = "answer")
+    private Set<Answer> answers;
 }
