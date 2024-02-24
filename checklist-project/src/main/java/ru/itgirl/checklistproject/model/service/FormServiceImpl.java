@@ -39,7 +39,7 @@ public class FormServiceImpl implements FormService {
         currentRangeValues.addAll(formCreateDto.getJunior().getCurrentRangeValues());
         int index_CRV = 0;
         for (String question : setOfQuestions) {
-            answerService.createAnswer(form_id, question, index_CRV);
+            answerService.createAnswer(form_id, question, currentRangeValues.get(index_CRV));
             index_CRV++;
         }
 
@@ -59,11 +59,11 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
-        JuniorDto juniorDto = JuniorDto.builder()
+        BeginnerDto beginnerDto = BeginnerDto.builder()
                 .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("junior")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
+                        .equals("beginner")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
                 .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("junior")).map(Answer::getValue).collect(Collectors.toList()))
+                        .equals("beginner")).map(Answer::getValue).collect(Collectors.toList()))
                 .build();
         TraineeDto traineeDto = TraineeDto.builder()
                 .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
@@ -71,11 +71,11 @@ public class FormServiceImpl implements FormService {
                 .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
                         .equals("trainee")).map(Answer::getValue).collect(Collectors.toList()))
                 .build();
-        BeginnerDto beginnerDto = BeginnerDto.builder()
+        JuniorDto juniorDto = JuniorDto.builder()
                 .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("beginner")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
+                        .equals("junior")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
                 .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("beginner")).map(Answer::getValue).collect(Collectors.toList()))
+                        .equals("junior")).map(Answer::getValue).collect(Collectors.toList()))
                 .build();
         return FormDto.builder()
                 .id(form.getId())

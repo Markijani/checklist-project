@@ -16,6 +16,6 @@ public class FormDto {
     private String createdAt;
     private int result;
     private BeginnerDto beginner;
-    private JuniorDto junior;
     private TraineeDto trainee;
+    private JuniorDto junior;
 }
