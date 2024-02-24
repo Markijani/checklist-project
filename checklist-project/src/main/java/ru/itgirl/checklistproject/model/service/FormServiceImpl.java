@@ -22,8 +22,8 @@ public class FormServiceImpl implements FormService {
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
         Form form = Form.builder()
-                .userName(formCreateDto.getUsername())
-                .groupNum(formCreateDto.getGroupNum())
+                .userName(formCreateDto.getUserName())
+                .groupNum(Integer.parseInt(formCreateDto.getGroupNum()))
                 .createdAt(LocalDateTime.now())
                 .build();
         // сохраняем форму в первоначальном виде с именем ученицы и номером группы
