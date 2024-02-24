@@ -29,7 +29,4 @@ public class Question {
 
     @OneToMany(mappedBy = "question")
     private Set<Suggestion> topics;
-
-    @OneToMany(mappedBy = "answer")
-    private Set<Answer> answers;
 }

@@ -21,15 +21,15 @@ public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "username")
     private String userName;
 
-    @Column(nullable = false)
+    @Column(name = "groupnum")
     private int groupNum;
 
-    @Column(nullable = false)
+    @Column(name = "createdat")
     private LocalDateTime createdAt;
 
-    @Column(nullable = false)
+    @Column
     private int result;
     }

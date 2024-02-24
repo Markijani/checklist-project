@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormCreateDto {
-    private String username;
-    private int groupNum;
+    private String userName;
+    private String groupNum;
     private BeginnerDto beginner;
     private JuniorDto junior;
     private TraineeDto trainee;
