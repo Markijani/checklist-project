@@ -7,7 +7,7 @@ import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "questions")
+@Table(name = "question")
 @Builder
 @Getter
 @Entity
@@ -20,8 +20,16 @@ public class Question {
     @Setter
     private String text;
 
+    @Column(nullable = false)
+    private Boolean included;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "level_id")
     private Level level;
 
-    @OneToMany
+    @OneToMany(mappedBy = "question")
     private Set<Suggestion> topics;
+
+    @OneToMany(mappedBy = "answer")
+    private Set<Answer> answers;
 }

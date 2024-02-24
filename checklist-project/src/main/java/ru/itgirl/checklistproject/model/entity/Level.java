@@ -7,7 +7,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "levels")
+@Table(name = "level")
 @Builder
 @Getter
 @Entity
@@ -20,6 +20,6 @@ public class Level {
     @Setter
     private String name;
 
-    @OneToMany()
+    @OneToMany(mappedBy = "level")
     private List<Question> questions;
 }
