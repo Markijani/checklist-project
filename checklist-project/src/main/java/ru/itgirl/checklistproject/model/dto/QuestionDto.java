@@ -5,11 +5,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AnswerCreateDto {
-    private int value;
-    private Long question_id;
+public class QuestionDto {
+    private Long id;
+    private String level;
+    private boolean included;
+    private List<SuggestionDto> suggestions;
 }
