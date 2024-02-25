@@ -6,12 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class AnswerDto {
+public class SuggestionDto {
     private Long id;
-    private int value;
-    private Long question_id;
-    private Long form_id;
+    private String name;
+    private String link;
 }
