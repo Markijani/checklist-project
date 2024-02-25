@@ -23,13 +23,13 @@ public class FormController {
         return formService.getAllForms();
     }
 
-    @GetMapping("/form")
+    @GetMapping("/forms/group")
     List<FormDto> getFormsByGroup(@RequestParam("group") int group) {
         return formService.getFormsByGroup(group);
     }
 
-    @GetMapping("/form")
-    List<FormDto> getFormsByGroup(@RequestParam("group") int group, @RequestParam("name") String name) {
+    @GetMapping("/forms/groupAndName")
+    List<FormDto> getFormsByGroupAndName(@RequestParam("group") int group, @RequestParam("name") String name) {
         return formService.getFormsByGroupAndName(group, name);
     }
 }
