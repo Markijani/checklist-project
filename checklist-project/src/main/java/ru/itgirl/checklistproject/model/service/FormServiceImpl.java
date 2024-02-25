@@ -57,6 +57,12 @@ public class FormServiceImpl implements FormService {
         return convertEntityToDto(savedForm);
     }
 
+    @Override
+    public List<FormDto> getAllForms() {
+        List<Form> forms = formRepository.findAll();
+        return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
         BeginnerDto beginnerDto = BeginnerDto.builder()
