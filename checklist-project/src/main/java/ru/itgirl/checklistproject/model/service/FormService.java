@@ -9,4 +9,6 @@ public interface FormService {
     FormDto createForm(FormCreateDto formCreateDto);
 
     List<FormDto> getAllForms();
+    List<FormDto> getFormsByGroup(int group);
+    List<FormDto> getFormsByGroupAndName(int group, String name);
 }

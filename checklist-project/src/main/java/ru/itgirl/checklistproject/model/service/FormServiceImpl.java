@@ -63,6 +63,18 @@ public class FormServiceImpl implements FormService {
         return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public List<FormDto> getFormsByGroup(int group) {
+        List<Form> forms = formRepository.findFormsByGroupBySql(group).orElseThrow();
+        return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FormDto> getFormsByGroupAndName(int group, String name) {
+        List<Form> forms = formRepository.findFormsByGroupAndNameBySql(group, name).orElseThrow();
+        return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    }
+
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
         BeginnerDto beginnerDto = BeginnerDto.builder()

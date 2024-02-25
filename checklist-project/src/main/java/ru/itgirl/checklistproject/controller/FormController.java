@@ -1,11 +1,7 @@
 package ru.itgirl.checklistproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
 import ru.itgirl.checklistproject.model.service.FormService;
@@ -25,5 +21,15 @@ public class FormController {
     @GetMapping("/forms")
     List<FormDto> getFormsView() {
         return formService.getAllForms();
+    }
+
+    @GetMapping("/form")
+    List<FormDto> getFormsByGroup(@RequestParam("group") int group) {
+        return formService.getFormsByGroup(group);
+    }
+
+    @GetMapping("/form")
+    List<FormDto> getFormsByGroup(@RequestParam("group") int group, @RequestParam("name") String name) {
+        return formService.getFormsByGroupAndName(group, name);
     }
 }
