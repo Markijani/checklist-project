@@ -48,8 +48,8 @@ public class FormServiceImpl implements FormService {
 
         // добавляем результат в форму
         int allValues = answers.stream().map(Answer::getValue).reduce(Integer::sum).orElseThrow();
-        int result = allValues / (answers.size() * 5) * 100;
-        initial_form.setResult(result);
+        double result = ((double) allValues / ((answers.size() * 5))) * 100;
+        initial_form.setResult((int) result);
 
         //обновляем форму результатом
         Form savedForm = formRepository.save(initial_form);
