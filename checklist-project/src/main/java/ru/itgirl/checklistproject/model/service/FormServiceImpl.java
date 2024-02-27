@@ -2,7 +2,10 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.checklistproject.model.dto.*;
+import ru.itgirl.checklistproject.model.dto.AnswerDto;
+import ru.itgirl.checklistproject.model.dto.FormCreateDto;
+import ru.itgirl.checklistproject.model.dto.FormDto;
+import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;
@@ -77,33 +80,25 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
-        BeginnerDto beginnerDto = BeginnerDto.builder()
-                .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("beginner")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
-                .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("beginner")).map(Answer::getValue).collect(Collectors.toList()))
-                .build();
-        TraineeDto traineeDto = TraineeDto.builder()
-                .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("trainee")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
-                .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("trainee")).map(Answer::getValue).collect(Collectors.toList()))
-                .build();
-        JuniorDto juniorDto = JuniorDto.builder()
-                .setOfQuestions(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("junior")).map(answer -> answer.getQuestion().getText()).collect(Collectors.toList()))
-                .currentRangeValues(answers.stream().filter(answer -> answer.getQuestion().getLevel().getName()
-                        .equals("junior")).map(Answer::getValue).collect(Collectors.toList()))
-                .build();
+        List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
+                .id(answer.getId())
+                .value(answer.getValue())
+                .suggestions(answer.getQuestion().getTopics().stream()
+                        .map(suggestion -> SuggestionDto.builder()
+                                .link(suggestion.getLink())
+                                .id(suggestion.getId())
+                                .name(suggestion.getName())
+                                .build()).collect(Collectors.toList()))
+                .question(answer.getQuestion().getText())
+                .question_level(answer.getQuestion().getLevel().getName())
+                .build()).toList();
         return FormDto.builder()
                 .id(form.getId())
                 .username(form.getUserName())
                 .groupNum(form.getGroupNum())
                 .createdAt(form.getCreatedAt().toString())
                 .result(form.getResult())
-                .beginner(beginnerDto)
-                .trainee(traineeDto)
-                .junior(juniorDto)
+                .answers(answerDtos)
                 .build();
     }
 }

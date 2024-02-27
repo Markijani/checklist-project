@@ -11,11 +11,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormDto {
+public class AnswerDto {
     private Long id;
-    private String username;
-    private String groupNum;
-    private String createdAt;
-    private int result;
-    private List<AnswerDto> answers;
+    private String question_level;
+    private String question;
+    private int value;
+    private List <SuggestionDto> suggestions;
 }
