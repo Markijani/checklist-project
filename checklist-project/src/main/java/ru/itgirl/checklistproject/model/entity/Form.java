@@ -25,7 +25,7 @@ public class Form {
     private String userName;
 
     @Column(name = "groupnum")
-    private int groupNum;
+    private String groupNum;
 
     @Column(name = "createdat")
     private LocalDateTime createdAt;

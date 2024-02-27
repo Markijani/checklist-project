@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class FormDto {
     private Long id;
     private String username;
-    private int groupNum;
+    private String groupNum;
     private String createdAt;
     private int result;
     private BeginnerDto beginner;

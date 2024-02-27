@@ -23,7 +23,7 @@ public class FormServiceImpl implements FormService {
     public FormDto createForm(FormCreateDto formCreateDto) {
         Form form = Form.builder()
                 .userName(formCreateDto.getUserName())
-                .groupNum(Integer.parseInt(formCreateDto.getGroupNum()))
+                .groupNum(formCreateDto.getGroupNum())
                 .createdAt(LocalDateTime.now())
                 .build();
         // сохраняем форму в первоначальном виде с именем ученицы и номером группы
@@ -64,13 +64,13 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public List<FormDto> getFormsByGroup(int group) {
+    public List<FormDto> getFormsByGroup(String group) {
         List<Form> forms = formRepository.findFormsByGroupBySql(group).orElseThrow();
         return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     @Override
-    public List<FormDto> getFormsByGroupAndName(int group, String name) {
+    public List<FormDto> getFormsByGroupAndName(String group, String name) {
         List<Form> forms = formRepository.findFormsByGroupAndNameBySql(group, name).orElseThrow();
         return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }

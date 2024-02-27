@@ -13,8 +13,8 @@ import java.util.Optional;
 public interface FormRepository extends JpaRepository<Form, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM form WHERE groupnum = ?")
-    Optional<List<Form>> findFormsByGroupBySql(int groupNum);
+    Optional<List<Form>> findFormsByGroupBySql(String groupNum);
 
     @Query(nativeQuery = true, value = "SELECT * FROM form WHERE groupnum = :groupNum AND username = :username")
-    Optional<List<Form>> findFormsByGroupAndNameBySql(@Param("groupNum") int groupNum, @Param("username") String username);
+    Optional<List<Form>> findFormsByGroupAndNameBySql(@Param("groupNum") String groupNum, @Param("username") String username);
 }
