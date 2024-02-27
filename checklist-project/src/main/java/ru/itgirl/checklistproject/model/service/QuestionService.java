@@ -8,6 +8,7 @@ import java.util.List;
 public interface QuestionService {
 
     QuestionDto createQuestion(QuestionCreateDto questionCreateDto);
+
     List<QuestionDto> getAllQuestions();
 
     List<QuestionDto> getQuestionsByIncluded(boolean included);

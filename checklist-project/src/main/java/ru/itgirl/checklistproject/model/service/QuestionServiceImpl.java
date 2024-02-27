@@ -7,6 +7,7 @@ import ru.itgirl.checklistproject.model.dto.QuestionDto;
 import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,13 +32,13 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDto createQuestion(QuestionCreateDto questionCreateDto){
+    public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
         QuestionDto questionDto = convertEntityToDto(question);
         return questionDto;
     }
 
-    public Question convertDtoToEntity(QuestionCreateDto questionCreateDto){
+    public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
         return Question.builder()
                 .text(questionCreateDto.getText())
                 .included(questionCreateDto.getIncluded())
