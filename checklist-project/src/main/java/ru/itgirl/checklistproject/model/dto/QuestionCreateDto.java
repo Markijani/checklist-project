@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.itgirl.checklistproject.model.entity.Level;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -15,4 +17,5 @@ public class QuestionCreateDto {
     private String text;
     private Boolean included;
     private Level level;
+    private List<SuggestionCreateDto> suggestions;
 }

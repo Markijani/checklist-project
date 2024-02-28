@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.QuestionCreateDto;
 import ru.itgirl.checklistproject.model.dto.QuestionDto;
+import ru.itgirl.checklistproject.model.dto.SuggestionCreateDto;
 import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Question;
+import ru.itgirl.checklistproject.model.entity.Suggestion;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.stream.Collectors;
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
+    private final SuggestionService suggestionService;
 
     @Override
     public List<QuestionDto> getAllQuestions() {
@@ -34,12 +37,16 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
-        QuestionDto questionDto = convertEntityToDto(question);
-        return questionDto;
+        Long questionId = question.getId();
+        for (SuggestionCreateDto suggestion:
+                questionCreateDto.getSuggestions()) {
+            suggestionService.createSuggestion(suggestion,questionId);
+        }
+        return convertEntityToDto(question);
     }
 
     public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
-        return Question.builder()
+                return Question.builder()
                 .text(questionCreateDto.getText())
                 .included(questionCreateDto.getIncluded())
                 .level(questionCreateDto.getLevel())
