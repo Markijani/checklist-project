@@ -83,12 +83,6 @@ public class FormServiceImpl implements FormService {
         List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
                 .id(answer.getId())
                 .value(answer.getValue())
-                .suggestions(answer.getQuestion().getTopics().stream()
-                        .map(suggestion -> SuggestionDto.builder()
-                                .link(suggestion.getLink())
-                                .id(suggestion.getId())
-                                .name(suggestion.getName())
-                                .build()).collect(Collectors.toList()))
                 .question(answer.getQuestion().getText())
                 .question_level(answer.getQuestion().getLevel().getName())
                 .build()).toList();

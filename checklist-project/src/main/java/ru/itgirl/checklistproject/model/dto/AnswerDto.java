@@ -16,5 +16,4 @@ public class AnswerDto {
     private String question_level;
     private String question;
     private int value;
-    private List <SuggestionDto> suggestions;
 }
