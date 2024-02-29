@@ -2,10 +2,7 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.checklistproject.model.dto.QuestionCreateDto;
-import ru.itgirl.checklistproject.model.dto.QuestionDto;
-import ru.itgirl.checklistproject.model.dto.SuggestionCreateDto;
-import ru.itgirl.checklistproject.model.dto.SuggestionDto;
+import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
@@ -46,6 +43,16 @@ public class QuestionServiceImpl implements QuestionService {
             suggestionService.createSuggestion(suggestion, questionId);
         }
         return convertEntityToDto(question);
+    }
+
+    @Override
+    public QuestionDto updateQuestion(QuestionUpdateDto questionUpdateDto) {
+        Question question = questionRepository.findById(questionUpdateDto.getId()).orElseThrow();
+        question.setText(questionUpdateDto.getText());
+        question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
+        question.setIncluded(questionUpdateDto.isIncluded());
+        Question savedQuestion = questionRepository.save(question);
+        return convertEntityToDto(savedQuestion);
     }
 
     @Override

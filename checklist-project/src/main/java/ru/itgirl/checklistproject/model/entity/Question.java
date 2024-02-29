@@ -21,10 +21,12 @@ public class Question {
     private String text;
 
     @Column(nullable = false)
+    @Setter
     private Boolean included;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
+    @Setter
     private Level level;
 
     @OneToMany(mappedBy = "question")
