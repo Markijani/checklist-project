@@ -79,6 +79,7 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public void deleteForm(Long id) {
+        answerRepository.deleteAll(answerRepository.findAnswerByFormId(id));
         formRepository.deleteById(id);
     }
 
