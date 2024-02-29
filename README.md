@@ -9,13 +9,18 @@
   |__ username
   |__ groupNum
   |__ createdAt
-  |__ result (величина: процент)
-  |__ answers (массив)
-      |__ в каждом элементе массива
+  |__ result
+  |__ answers
+      |__ answer 0
           |__ id
           |__ questionLevel
           |__ question
           |__ value
+      |__ answer 1
+          |__ id
+          |__ questionLevel
+          |__ question
+           |__ value
 ```
 Пример Json
 ```json
@@ -156,8 +161,12 @@
 |__ id
 |__ level
 |__ included
-|__ suggestions (массив)
-  |__ в каждом элементе массива
+|__ suggestions 
+  |__ suggestion 0
+    |__ id
+    |__ name
+    |__ link
+  |__ suggestion 1
     |__ id
     |__ name
     |__ link
