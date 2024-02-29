@@ -16,6 +16,6 @@ public class QuestionCreateDto {
 
     private String text;
     private Boolean included;
-    private Level level;
+    private String level;
     private List<SuggestionCreateDto> suggestions;
 }

@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.entity.Suggestion;
 
+import java.util.List;
+
 @Repository
 public interface SuggestionRepository extends JpaRepository<Suggestion, Long> {
+    List<Suggestion> findByQuestionId(Long id);
 }

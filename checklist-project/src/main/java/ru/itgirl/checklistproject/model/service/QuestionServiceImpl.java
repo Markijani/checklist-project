@@ -8,7 +8,9 @@ import ru.itgirl.checklistproject.model.dto.SuggestionCreateDto;
 import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.entity.Suggestion;
+import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
+import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,6 +21,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
     private final SuggestionService suggestionService;
+    private final LevelRepository levelRepository;
+    private final SuggestionRepository suggestionRepository;
 
     @Override
     public List<QuestionDto> getAllQuestions() {
@@ -49,12 +53,13 @@ public class QuestionServiceImpl implements QuestionService {
                 return Question.builder()
                 .text(questionCreateDto.getText())
                 .included(questionCreateDto.getIncluded())
-                .level(questionCreateDto.getLevel())
+                .level(levelRepository.findLevelByName(questionCreateDto.getLevel()))
                 .build();
     }
 
     private QuestionDto convertEntityToDto(Question question) {
-        List<SuggestionDto> suggestionDtoList = question.getTopics()
+        Long id = question.getId();
+        List<SuggestionDto> suggestionDtoList = suggestionRepository.findByQuestionId(id)
                 .stream()
                 .map(suggestion -> SuggestionDto.builder()
                         .id(suggestion.getId())
@@ -67,6 +72,7 @@ public class QuestionServiceImpl implements QuestionService {
                 .level(question.getLevel().getName())
                 .included(question.getIncluded())
                 .suggestions(suggestionDtoList)
+                .text(question.getText())
                 .build();
     }
 }

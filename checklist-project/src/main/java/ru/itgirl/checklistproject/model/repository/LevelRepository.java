@@ -6,4 +6,6 @@ import ru.itgirl.checklistproject.model.entity.Level;
 
 @Repository
 public interface LevelRepository extends JpaRepository<Level, Long> {
+
+    Level findLevelByName (String name);
 }
