@@ -21,8 +21,13 @@ public class QuestionController {
         return questionService.getAllQuestions();
     }
 
+    @GetMapping ("/question/{id}")
+    QuestionDto getQuestionById (@PathVariable("id") Long id) {
+        return questionService.getQuestionById(id);
+    }
+
     @GetMapping("questions/included")
-    public List<QuestionDto> getQuestionsByIncluded(@RequestParam("included") boolean included) {
+    List<QuestionDto> getQuestionsByIncluded(@RequestParam("included") boolean included) {
         return questionService.getQuestionsByIncluded(included);
     }
 

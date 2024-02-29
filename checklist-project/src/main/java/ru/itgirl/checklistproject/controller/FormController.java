@@ -23,6 +23,11 @@ public class FormController {
         return formService.getAllForms();
     }
 
+    @GetMapping("/form/{id}")
+    FormDto getFormsView(@PathVariable("id") Long id) {
+        return formService.getFormById(id);
+    }
+
     @GetMapping("/forms/group")
     List<FormDto> getFormsByGroup(@RequestParam("group") String group) {
         return formService.getFormsByGroup(group);

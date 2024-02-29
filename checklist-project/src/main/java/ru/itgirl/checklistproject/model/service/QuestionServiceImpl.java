@@ -27,6 +27,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public QuestionDto getQuestionById (Long id) {
+        return convertEntityToDto(questionRepository.findById(id).orElseThrow());
+    }
+
+    @Override
     public List<QuestionDto> getQuestionsByIncluded(boolean included) {
         List<Question> questions = questionRepository.findQuestionsByIncluded(included);
         return questions.stream()
