@@ -10,11 +10,11 @@ import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
 @Service
 @RequiredArgsConstructor
-public class SuggestionServiceImpl implements SuggestionService{
+public class SuggestionServiceImpl implements SuggestionService {
     private final SuggestionRepository suggestionRepository;
     private final QuestionRepository questionRepository;
 
-    public void createSuggestion (SuggestionCreateDto suggestionCreateDto, Long questionId) {
+    public void createSuggestion(SuggestionCreateDto suggestionCreateDto, Long questionId) {
         Suggestion newSuggestion = Suggestion.builder()
                 .question(questionRepository.findById(questionId).orElseThrow())
                 .link(suggestionCreateDto.getLink())

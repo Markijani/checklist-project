@@ -7,7 +7,6 @@ import ru.itgirl.checklistproject.model.dto.QuestionDto;
 import ru.itgirl.checklistproject.model.dto.SuggestionCreateDto;
 import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Question;
-import ru.itgirl.checklistproject.model.entity.Suggestion;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
@@ -42,20 +41,20 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
         Long questionId = question.getId();
-        for (SuggestionCreateDto suggestion:
+        for (SuggestionCreateDto suggestion :
                 questionCreateDto.getSuggestions()) {
-            suggestionService.createSuggestion(suggestion,questionId);
+            suggestionService.createSuggestion(suggestion, questionId);
         }
         return convertEntityToDto(question);
     }
 
     @Override
-    public void deleteQuestion (Long id) {
+    public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
     }
 
     public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
-                return Question.builder()
+        return Question.builder()
                 .text(questionCreateDto.getText())
                 .included(questionCreateDto.getIncluded())
                 .level(levelRepository.findLevelByName(questionCreateDto.getLevel()))

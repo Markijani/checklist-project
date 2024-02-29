@@ -13,5 +13,5 @@ public interface QuestionService {
 
     List<QuestionDto> getQuestionsByIncluded(boolean included);
 
-    void deleteQuestion (Long id);
+    void deleteQuestion(Long id);
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.AnswerDto;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
-import ru.itgirl.checklistproject.model.dto.SuggestionDto;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;

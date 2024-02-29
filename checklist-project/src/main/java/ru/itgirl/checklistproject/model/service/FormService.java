@@ -14,5 +14,5 @@ public interface FormService {
 
     List<FormDto> getFormsByGroupAndName(String group, String name);
 
-    void deleteForm (Long id);
+    void deleteForm(Long id);
 }
