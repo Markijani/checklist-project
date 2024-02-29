@@ -13,14 +13,14 @@
   |__ answers
       |__ answer 0
           |__ id
-          |__ questionLevel
+          |__ question_level
           |__ question
           |__ value
       |__ answer 1
           |__ id
-          |__ questionLevel
+          |__ question_level
           |__ question
-           |__ value
+          |__ value
 ```
 Пример Json
 ```json
