@@ -78,6 +78,11 @@ public class FormServiceImpl implements FormService {
         return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteForm(Long id) {
+        formRepository.deleteById(id);
+    }
+
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
         List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()

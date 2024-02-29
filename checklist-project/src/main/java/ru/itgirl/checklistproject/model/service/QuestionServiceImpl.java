@@ -49,6 +49,11 @@ public class QuestionServiceImpl implements QuestionService {
         return convertEntityToDto(question);
     }
 
+    @Override
+    public void deleteQuestion (Long id) {
+        questionRepository.deleteById(id);
+    }
+
     public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
                 return Question.builder()
                 .text(questionCreateDto.getText())

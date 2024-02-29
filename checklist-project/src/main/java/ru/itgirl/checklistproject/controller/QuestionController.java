@@ -29,4 +29,9 @@ public class QuestionController {
     QuestionDto createQuestion(@RequestBody QuestionCreateDto questionCreateDto) {
         return questionService.createQuestion(questionCreateDto);
     }
+
+    @DeleteMapping("/question/delete/{id}")
+    void deleteBook(@PathVariable("id") Long id) {
+        questionService.deleteQuestion(id);
+    }
 }

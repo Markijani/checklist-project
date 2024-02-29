@@ -32,4 +32,9 @@ public class FormController {
     List<FormDto> getFormsByGroupAndName(@RequestParam("group") String group, @RequestParam("name") String name) {
         return formService.getFormsByGroupAndName(group, name);
     }
+
+    @DeleteMapping("/form/delete/{id}")
+    void deleteBook(@PathVariable("id") Long id) {
+        formService.deleteForm(id);
+    }
 }
