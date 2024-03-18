@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="add suggestions" author="morozevich">
+        <sql>
+            Insert into suggestion (link, name, question_id) values
+            ('https://itgirlschool.notion.site/19-API-f022a1d855f84556822792ae865ccc01', 'Неделя 19. Асинхронность и работа с API', 1),
+            ('https://itgirlschool.notion.site/1-HTML-db0c955498d94cef9962f9734c5b0ed2', 'Неделя 1. Основы HTML', 2),
+            ('https://itgirlschool.notion.site/2-c980fca3150f4b7890748c6cad913114', 'Неделя 2. Семантическая вёрстка и разметка', 2),
+            ('https://itgirlschool.notion.site/4-CSS-44e1f287a10e4e9793c48ef83f0e60b9', 'Неделя 4. Стилизация и CSS-свойства', 3),
+            ('https://itgirlschool.notion.site/5-4ef98d6af6664eae8dfeaa9da51076ba', 'Неделя 5. Позиционирование элементов', 3),
+            ('https://itgirlschool.notion.site/6-CSS-Grid-9d2ab375ed5e4f0a828631427dcdd6d4', 'Неделя 6. CSS Grid', 3),
+            ('https://itgirlschool.notion.site/7-d538acf66018487ea0b5b12167679fc9', 'Неделя 7. Адаптивность верстка', 3),
+            ('https://www.youtube.com/watch?v=tbj4gvq7dHY', 'Методология БЭМ', 3),
+            ('https://itgirlschool.notion.site/9-JavaScript-0eb849b1efbc46af934b541b107451f5', 'Неделя 9. Знакомство с JavaScript', 4),
+            ('https://itgirlschool.notion.site/10-88692713b2924009bf8b5e2b82a5c175', 'Неделя 10. Функции', 4),
+            ('https://itgirlschool.notion.site/14-4b65e02f71c7413783798409499f834c', 'Неделя 14. Массивы', 4),
+            ('https://itgirlschool.notion.site/15-a205da7b5d7c40fca503b00bd7be0602', 'Неделя 15. Циклы', 4),
+            ('https://itgirlschool.notion.site/17-f8b2f0ebcd794c2ca7de152460bf94ef', 'Неделя 17. Объекты и классы', 4),
+            ('https://itgirlschool.notion.site/1-HTML-db0c955498d94cef9962f9734c5b0ed2', 'Неделя 1. Основы HTML. Обзор инструментов', 5),
+            ('https://www.youtube.com/watch?v=qDGTiwonZJE', 'Недели 9-10. Командная работа по Agile', 6),
+
+            ('https://itgirlschool.notion.site/11-DOM-15fa90dcbc574814bf6cec66a18f7ddd', 'Неделя 11. Знакомство с DOM', 7),
+            ('https://itgirlschool.notion.site/20-Node-js-npm-9bf799eb0f77485a8ef7841a61b3b60c', 'Неделя 20. Обработка ошибок. Node.js и npm', 7),
+            ('https://itgirlschool.notion.site/19-API-f022a1d855f84556822792ae865ccc01', 'Неделя 19. Асинхронность и работа с API', 7),
+            ('https://itgirlschool.notion.site/19-API-f022a1d855f84556822792ae865ccc01', 'Неделя 19. Асинхронность и работа с API', 8),
+            ('null', 'Cross-Origin Resource Sharing (CORS). Request &amp; Response Headers (это была тема для самостоятельного изучения)', 9),
+            ('null', 'Что такое линтеры. Pre-commit Check (это была тема для самостоятельного изучения)', 10),
+            ('null', 'Неделя 10. Командная работа в одной ветке Git (это был вебинар с наставницей)', 11),
+            ('https://itgirlschool.notion.site/20-Node-js-npm-9bf799eb0f77485a8ef7841a61b3b60c', 'Неделя 20. Обработка ошибок. Node.js и npm', 12),
+            ('https://itgirlschool.notion.site/7-d538acf66018487ea0b5b12167679fc9', 'Неделя 7. Адаптивная вёрстка. Препроцессоры', 13),
+            ('https://itgirlschool.notion.site/3-41c44a7f3b684a09bc4a26030e87eed5', 'Неделя 3. Графика. Figma', 14),
+            ('https://itgirlschool.notion.site/8-CSS-29091cbc3bd4481fb9b06e09f369783e', 'Неделя 8. СSS Фреймворки', 15),
+
+            ('null', 'Что такое сборщик модулей. Babel. Настройка Webpack. Правила. Модули. Плагины. DevServer. Переход к Vite (это был вебинар с наставницей)', 16),
+            ('https://itgirlschool.notion.site/21-React-e44288ea389a4c3cb7bb2d6a1658fbc0', 'Неделя 21. Введение в React', 17),
+            ('https://itgirlschool.notion.site/22-c559af92ea8b468f9eb3ca6f01495b5b', 'Неделя 22. Компоненты', 17),
+            ('https://itgirlschool.notion.site/23-CSS-React-d4b0b61bb697459aacb1681ba2764440', 'Неделя 23. CSS в React', 17),
+            ('https://itgirlschool.notion.site/24-Props-State-e85c9dbc72b8400484b7fa8dbcef3b79', 'Неделя 24. Props &amp; State', 17),
+            ('https://itgirlschool.notion.site/25-e45f5c4b3f7f4c0aa1097fdc36df362c', 'Неделя 25. Жизненный цикл компонента', 17),
+            ('https://itgirlschool.notion.site/29-Context-26ce7fd605f342adb66195ecebb18e86', 'Неделя 29. Context', 18),
+            ('null', 'Библиотеки (это была тема для самостоятельного изучения)', 18),
+            ('https://itgirlschool.notion.site/26-f67d3134cbf54844831a5d899db00b36', 'Неделя 26. Роутинг', 19),
+            ('null', 'Как повысить эффективность стилизации. Что такое UI библиотека. MaterialUI (это была тема для самостоятельного изучения)', 20)
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
