@@ -10,5 +10,5 @@ build:
   args: springboot;repackage
 run:
   persistenceMount: /data
-  containerPort: 80
+  containerPort: 8080
   jarName: checklist-project-0.0.1-SNAPSHOT.jar
