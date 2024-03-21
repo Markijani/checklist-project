@@ -30,19 +30,6 @@
             FOREIGN KEY (form_id) REFERENCES form (id)
             );
 
-            Create table if not exists questionnaire (
-            id bigserial PRIMARY KEY,
-            created_at TIMESTAMP NOT NULL,
-            version_name varchar NOT NULL
-            );
-
-            Create table if not exists questionnaire_question (
-            questionnaire_id int NOT NULL,
-            question_id int NOT NULL,
-            FOREIGN KEY (questionnaire_id) REFERENCES questionnaire (id),
-            FOREIGN KEY (question_id) REFERENCES question (id)
-            );
-
         </sql>
     </changeSet>
 </databaseChangeLog>

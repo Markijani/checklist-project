@@ -8,11 +8,7 @@
     <changeSet id="init db" author="author kvitko">
         <sql>
 
-            DROP TABLE IF EXISTS questionnaire_question;
-            DROP TABLE IF EXISTS questionnaire;
-
             ALTER TABLE question ADD included boolean DEFAULT true;
-
 
         </sql>
     </changeSet>
