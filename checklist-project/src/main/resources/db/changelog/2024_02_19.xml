@@ -12,9 +12,7 @@
             username VARCHAR NOT NULL,
             groupNum VARCHAR NOT NULL,
             result INTEGER,
-            createdAt TIMESTAMP,
-            answer_id int NOT NULL,
-            FOREIGN KEY (answer_id) REFERENCES answer (id),
+            createdAt TIMESTAMP
             );
         </sql>
     </changeSet>

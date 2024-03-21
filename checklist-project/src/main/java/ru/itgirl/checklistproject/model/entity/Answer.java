@@ -3,6 +3,8 @@ package ru.itgirl.checklistproject.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "answer")
@@ -14,11 +16,8 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "answer_form",
-            joinColumns=  @JoinColumn(name="answer_id", referencedColumnName="id"),
-            inverseJoinColumns= @JoinColumn(name=" form_id", referencedColumnName="id") )
-    private Form form;
+    @ManyToMany(mappedBy = "answers")
+    private Set<Form> forms;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
