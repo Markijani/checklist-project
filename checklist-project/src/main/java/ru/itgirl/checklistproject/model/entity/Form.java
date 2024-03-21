@@ -31,4 +31,10 @@ public class Form {
 
     @Column
     private int result;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "answer_form",
+            joinColumns=  @JoinColumn(name="form_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name=" answer_id", referencedColumnName="id") )
+    private Answer answer;
 }

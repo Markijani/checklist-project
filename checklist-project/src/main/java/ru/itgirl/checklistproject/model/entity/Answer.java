@@ -14,15 +14,21 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Setter
-    private int value;
-
-    @ManyToOne
-    @JoinColumn(name = "form_id")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "answer_form",
+            joinColumns=  @JoinColumn(name="answer_id", referencedColumnName="id"),
+            inverseJoinColumns= @JoinColumn(name=" form_id", referencedColumnName="id") )
     private Form form;
 
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
+
+    @Column(nullable = false)
+    @Setter
+    private boolean correct;
+
+    @Column(nullable = false)
+    @Setter
+    private String text;
 }

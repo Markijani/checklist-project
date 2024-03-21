@@ -22,7 +22,8 @@
 
             Create table if not exists answer (
             id bigserial PRIMARY KEY,
-            value int NOT NULL,
+            correct boolean NOT NULL,
+            text varchar NOT NULL,
             question_id int NOT NULL,
             form_id int NOT NULL,
             FOREIGN KEY (question_id) REFERENCES question (id),

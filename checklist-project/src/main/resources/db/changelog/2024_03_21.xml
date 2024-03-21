@@ -5,17 +5,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet id="init db" author="author kvitko">
+    <changeSet id="init db" author="author volkova">
         <sql>
-            CREATE TABLE if not exists form (
-            id bigserial PRIMARY KEY,
-            username VARCHAR NOT NULL,
-            groupNum VARCHAR NOT NULL,
-            result INTEGER,
-            createdAt TIMESTAMP,
+
+            Create table if not exists answer_form (
             answer_id int NOT NULL,
+            form_id int NOT NULL,
             FOREIGN KEY (answer_id) REFERENCES answer (id),
+            FOREIGN KEY (form_id) REFERENCES form (id)
             );
+
         </sql>
     </changeSet>
 </databaseChangeLog>
