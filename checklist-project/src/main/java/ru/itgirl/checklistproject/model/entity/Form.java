@@ -21,17 +21,14 @@ public class Form {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    private String userName;
-
-    @Column(name = "groupnum")
-    private String groupNum;
-
     @Column(name = "createdat")
     private LocalDateTime createdAt;
 
     @Column
-    private int result;
+    private String token;
+
+    @Column
+    private String role;
 
     @ManyToMany
     @JoinTable(name = "answer_form",
