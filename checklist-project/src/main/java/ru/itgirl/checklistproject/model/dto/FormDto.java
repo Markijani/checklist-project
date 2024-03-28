@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,10 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormDto {
-    private Long id;
-    private String username;
-    private String groupNum;
+    private String token;
+    private String role;
     private String createdAt;
-    private int result;
-    private List<AnswerDto> answers;
+    private ArrayList <LevelDto> levels;
+    private List<AnswerCreateDto> answers;
 }

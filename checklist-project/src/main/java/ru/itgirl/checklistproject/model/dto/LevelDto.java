@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TraineeDto {
-    private List<String> setOfQuestions;
-    private List<Integer> currentRangeValues;
+public class LevelDto {
+    private String name;
+    private boolean completed;
 }

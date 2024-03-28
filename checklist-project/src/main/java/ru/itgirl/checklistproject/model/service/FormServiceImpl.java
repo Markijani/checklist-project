@@ -2,7 +2,7 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.checklistproject.model.dto.AnswerDto;
+import ru.itgirl.checklistproject.model.dto.AnswerCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
 import ru.itgirl.checklistproject.model.entity.Answer;
@@ -90,7 +90,7 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
-        List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
+        List<AnswerCreateDto> answerDtos = answers.stream().map(answer -> AnswerCreateDto.builder()
                 .id(answer.getId())
                 .value(answer.getValue())
                 .question(answer.getQuestion().getText())
