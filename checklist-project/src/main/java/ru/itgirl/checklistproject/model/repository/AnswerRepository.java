@@ -10,7 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    List<Answer> findAnswerByFormId(Long id);
+    List<Answer> findAnswerByFormsId(Long id);
 
     Optional<Answer> findByQuestionText(String string);
 }

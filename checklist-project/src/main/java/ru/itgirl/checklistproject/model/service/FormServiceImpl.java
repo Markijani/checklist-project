@@ -63,12 +63,12 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public void deleteForm(Long id) {
-        answerRepository.deleteAll(answerRepository.findAnswerByFormId(id));
+        answerRepository.deleteAll(answerRepository.findAnswerByFormsId(id));
         formRepository.deleteById(id);
     }
 
     private FormDto convertEntityToDto(Form form) {
-        List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
+        List<Answer> answers = answerRepository.findAnswerByFormsId(form.getId());
         List<Level> levels = levelRepository.findAll();
         List<LevelDto> levelDtos = levels.stream().map(level ->
                 LevelDto.builder()
