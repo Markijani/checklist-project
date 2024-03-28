@@ -28,14 +28,9 @@ public class FormController {
         return formService.getFormById(id);
     }
 
-    @GetMapping("/forms/group")
-    List<FormDto> getFormsByGroup(@RequestParam("group") String group) {
-        return formService.getFormsByGroup(group);
-    }
-
-    @GetMapping("/forms/groupAndName")
-    List<FormDto> getFormsByGroupAndName(@RequestParam("group") String group, @RequestParam("name") String name) {
-        return formService.getFormsByGroupAndName(group, name);
+    @GetMapping("/forms/token")
+    FormDto getFormsByGroup(@RequestParam("token") String token) {
+        return formService.getFormByToken(token);
     }
 
     @DeleteMapping("/form/delete/{id}")

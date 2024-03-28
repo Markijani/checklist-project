@@ -10,11 +10,9 @@ public interface FormService {
 
     List<FormDto> getAllForms();
 
-    FormDto getFormById (Long id);
+    FormDto getFormById(Long id);
 
-    List<FormDto> getFormsByGroup(String group);
-
-    List<FormDto> getFormsByGroupAndName(String group, String name);
+    FormDto getFormByToken(String token);
 
     void deleteForm(Long id);
 }

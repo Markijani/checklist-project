@@ -22,7 +22,6 @@ public class SuggestionServiceImpl implements SuggestionService {
                 .build();
         Suggestion savedSuggestion = suggestionRepository.save(newSuggestion);
         SuggestionDto.builder()
-                .id(savedSuggestion.getId())
                 .name(savedSuggestion.getLink())
                 .link(savedSuggestion.getLink())
                 .build();

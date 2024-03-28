@@ -18,9 +18,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Override
     public void createAnswer(Long form_id, String question_name, int value) {
         Answer answer = Answer.builder()
-                .form(formRepository.findById(form_id).orElseThrow())
                 .question(questionRepository.findQuestionByText(question_name).orElseThrow())
-                .value(value)
                 .build();
         answerRepository.save(answer);
     }

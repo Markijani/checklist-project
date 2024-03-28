@@ -27,7 +27,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDto getQuestionById (Long id) {
+    public QuestionDto getQuestionById(Long id) {
         return convertEntityToDto(questionRepository.findById(id).orElseThrow());
     }
 
@@ -79,7 +79,6 @@ public class QuestionServiceImpl implements QuestionService {
         List<SuggestionDto> suggestionDtoList = suggestionRepository.findByQuestionId(id)
                 .stream()
                 .map(suggestion -> SuggestionDto.builder()
-                        .id(suggestion.getId())
                         .link(suggestion.getLink())
                         .name(suggestion.getName())
                         .build()

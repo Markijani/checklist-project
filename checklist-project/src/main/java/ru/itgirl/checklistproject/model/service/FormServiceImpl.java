@@ -5,13 +5,19 @@ import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.AnswerCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
+import ru.itgirl.checklistproject.model.dto.LevelDto;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
+import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.FormRepository;
+import ru.itgirl.checklistproject.model.repository.LevelRepository;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,43 +26,22 @@ public class FormServiceImpl implements FormService {
     private final FormRepository formRepository;
     private final AnswerService answerService;
     private final AnswerRepository answerRepository;
+    private final LevelRepository levelRepository;
 
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
-        Form form = Form.builder()
-                .userName(formCreateDto.getUserName())
-                .groupNum(formCreateDto.getGroupNum())
-                .createdAt(LocalDateTime.now())
-                .build();
-        // сохраняем форму в первоначальном виде с именем ученицы и номером группы
-        Form initial_form = formRepository.save(form);
-        Long form_id = initial_form.getId();
-
-        // сохраняем вопросы
-        List<String> setOfQuestions = formCreateDto.getBeginner().getSetOfQuestions();
-        setOfQuestions.addAll(formCreateDto.getTrainee().getSetOfQuestions());
-        setOfQuestions.addAll(formCreateDto.getJunior().getSetOfQuestions());
-        List<Integer> currentRangeValues = formCreateDto.getBeginner().getCurrentRangeValues();
-        currentRangeValues.addAll(formCreateDto.getTrainee().getCurrentRangeValues());
-        currentRangeValues.addAll(formCreateDto.getJunior().getCurrentRangeValues());
-        int index_CRV = 0;
-        for (String question : setOfQuestions) {
-            answerService.createAnswer(form_id, question, currentRangeValues.get(index_CRV));
-            index_CRV++;
+        Set<Answer> answers = new HashSet<>();
+        List<AnswerCreateDto> answerDtos = formCreateDto.getAnswers();
+        for (AnswerCreateDto answerDto : answerDtos) {
+            answers.add(answerRepository.findByQuestionText(answerDto.getQuestion()).orElseThrow());
         }
-
-        // получаем сохраненные вопросы
-        List<Answer> answers = answerRepository.findAnswerByFormId(form_id);
-
-        // добавляем результат в форму
-        int allValues = answers.stream().map(Answer::getValue).reduce(Integer::sum).orElseThrow();
-        double result = ((double) allValues / ((answers.size() * 5))) * 100;
-        initial_form.setResult((int) result);
-
-        //обновляем форму результатом
-        Form savedForm = formRepository.save(initial_form);
-
-        return convertEntityToDto(savedForm);
+        Form form = Form.builder()
+                .token(formCreateDto.getToken())
+                .role(formCreateDto.getRole())
+                .createdAt(LocalDateTime.now())
+                .answers(answers)
+                .build();
+        return convertEntityToDto(formRepository.save(form));
     }
 
     @Override
@@ -66,20 +51,14 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public FormDto getFormById (Long id) {
+    public FormDto getFormById(Long id) {
         return convertEntityToDto(formRepository.findById(id).orElseThrow());
     }
 
     @Override
-    public List<FormDto> getFormsByGroup(String group) {
-        List<Form> forms = formRepository.findFormsByGroupBySql(group).orElseThrow();
-        return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<FormDto> getFormsByGroupAndName(String group, String name) {
-        List<Form> forms = formRepository.findFormsByGroupAndNameBySql(group, name).orElseThrow();
-        return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());
+    public FormDto getFormByToken(String token) {
+        Form form = formRepository.findByToken(token).orElseThrow();
+        return convertEntityToDto(form);
     }
 
     @Override
@@ -90,19 +69,33 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormId(form.getId());
+        List<Level> levels = levelRepository.findAll();
+        List<LevelDto> levelDtos = levels.stream().map(level ->
+                LevelDto.builder()
+                        .name(level.getName())
+                        .completed(false)
+                        .build()).collect(Collectors.toList());
+        for (Answer answer : answers) {
+            Level completedLevel = answer.getQuestion().getLevel();
+            Optional<LevelDto> completedLevelDto = levelDtos.stream()
+                    .filter(level -> level.getName().equals(completedLevel.getName()))
+                    .findAny();
+            if (completedLevelDto.isPresent()) {
+                LevelDto levelDto = completedLevelDto.get();
+                levelDto.setCompleted(true);
+                levelDtos.set(levelDtos.indexOf(levelDto), levelDto);
+            }
+        }
         List<AnswerCreateDto> answerDtos = answers.stream().map(answer -> AnswerCreateDto.builder()
-                .id(answer.getId())
-                .value(answer.getValue())
+                .answerText(answer.getText())
                 .question(answer.getQuestion().getText())
-                .question_level(answer.getQuestion().getLevel().getName())
                 .build()).toList();
         return FormDto.builder()
-                .id(form.getId())
-                .username(form.getUserName())
-                .groupNum(form.getGroupNum())
+                .token(form.getToken())
+                .role(form.getRole())
                 .createdAt(form.getCreatedAt().toString())
-                .result(form.getResult())
                 .answers(answerDtos)
+                .levels(levelDtos)
                 .build();
     }
 }

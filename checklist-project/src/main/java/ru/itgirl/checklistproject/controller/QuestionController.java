@@ -21,8 +21,8 @@ public class QuestionController {
         return questionService.getAllQuestions();
     }
 
-    @GetMapping ("/question/{id}")
-    QuestionDto getQuestionById (@PathVariable("id") Long id) {
+    @GetMapping("/question/{id}")
+    QuestionDto getQuestionById(@PathVariable("id") Long id) {
         return questionService.getQuestionById(id);
     }
 
@@ -36,10 +36,11 @@ public class QuestionController {
         return questionService.createQuestion(questionCreateDto);
     }
 
-    @PutMapping ("question/update")
-    QuestionDto updateQuestion (@RequestBody QuestionUpdateDto questionUpdateDto) {
+    @PutMapping("question/update")
+    QuestionDto updateQuestion(@RequestBody QuestionUpdateDto questionUpdateDto) {
         return questionService.updateQuestion(questionUpdateDto);
     }
+
     @DeleteMapping("/question/delete/{id}")
     void deleteBook(@PathVariable("id") Long id) {
         questionService.deleteQuestion(id);
