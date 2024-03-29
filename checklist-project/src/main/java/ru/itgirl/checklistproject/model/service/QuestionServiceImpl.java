@@ -62,7 +62,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void deleteQuestion(Long id) {
-        suggestionRepository.deleteAll(suggestionRepository.findByQuestionId(id));
         questionRepository.deleteById(id);
     }
 
@@ -75,19 +74,10 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private QuestionDto convertEntityToDto(Question question) {
-        Long id = question.getId();
-        List<SuggestionDto> suggestionDtoList = suggestionRepository.findByQuestionId(id)
-                .stream()
-                .map(suggestion -> SuggestionDto.builder()
-                        .link(suggestion.getLink())
-                        .name(suggestion.getName())
-                        .build()
-                ).toList();
         return QuestionDto.builder()
                 .id(question.getId())
                 .level(question.getLevel().getName())
                 .included(question.getIncluded())
-                .suggestions(suggestionDtoList)
                 .text(question.getText())
                 .build();
     }

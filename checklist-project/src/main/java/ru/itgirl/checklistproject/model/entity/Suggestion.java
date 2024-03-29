@@ -23,6 +23,6 @@ public class Suggestion {
     private String link;
 
     @ManyToOne
-    @JoinColumn(name = "question_id")
-    private Question question;
+    @JoinColumn(name = "level_id")
+    private Level level;
 }

@@ -16,7 +16,6 @@ public class SuggestionServiceImpl implements SuggestionService {
 
     public void createSuggestion(SuggestionCreateDto suggestionCreateDto, Long questionId) {
         Suggestion newSuggestion = Suggestion.builder()
-                .question(questionRepository.findById(questionId).orElseThrow())
                 .link(suggestionCreateDto.getLink())
                 .name(suggestionCreateDto.getName())
                 .build();

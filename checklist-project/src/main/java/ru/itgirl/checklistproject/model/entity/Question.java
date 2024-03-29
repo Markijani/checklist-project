@@ -28,7 +28,4 @@ public class Question {
     @JoinColumn(name = "level_id")
     @Setter
     private Level level;
-
-    @OneToMany(mappedBy = "question")
-    private Set<Suggestion> topics;
 }
