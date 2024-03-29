@@ -12,6 +12,7 @@ import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.FormRepository;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
+import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -27,13 +28,15 @@ public class FormServiceImpl implements FormService {
     private final AnswerService answerService;
     private final AnswerRepository answerRepository;
     private final LevelRepository levelRepository;
+    private final QuestionRepository questionRepository;
 
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
         Set<Answer> answers = new HashSet<>();
         List<AnswerCreateDto> answerDtos = formCreateDto.getAnswers();
         for (AnswerCreateDto answerDto : answerDtos) {
-            answers.add(answerRepository.findByQuestionText(answerDto.getQuestion()).orElseThrow());
+            answers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
+                    ,questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
         }
         Form form = Form.builder()
                 .token(formCreateDto.getToken())
