@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="add level names" author="author morozevich">
+        <sql>
+
+            Insert into level (name) values
+            ('Основы HTML'),
+            ('CSS'),
+            ('Позиционирование'),
+            ('Css Grid'),
+            ('Адаптивная вёрстка'),
+            ('Bootstrap'),
+            ('Основы JS'),
+            ('Функции'),
+            ('Объекты'),
+            ('DOM'),
+            ('Строки и объект Math'),
+            ('Дата и время в JS'),
+            ('Массивы'),
+            ('Циклы'),
+            ('Формы'),
+            ('Объекты и классы'),
+            ('Веб-хранилища и JSON-объект'),
+            ('Асинхронность и работа с API'),
+            ('Обработка ошибок. Node.js и npm'),
+            ('Основные понятия React'),
+            ('Компоненты'),
+            ('Css в React'),
+            ('Props vs State'),
+            ('Жизненный цикл компонента'),
+            ('Роутинг'),
+            ('События, коллбэки и кастомные хуки'),
+            ('Формы и валидации'),
+            ('Context и работа с API'),
+            ('MobX')
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

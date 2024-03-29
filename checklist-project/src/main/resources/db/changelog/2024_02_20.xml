@@ -10,15 +10,15 @@
 
             Create table if not exists level (
             id bigserial PRIMARY KEY,
-            name varchar NOT NULL,
-            level_id int NOT NULL,
-            FOREIGN KEY (level_id) REFERENCES level (id)
+            name varchar NOT NULL
             );
 
             Create table if not exists question (
             id bigserial PRIMARY KEY,
             text varchar NOT NULL,
-            included boolean DEFAULT true
+            included boolean DEFAULT true,
+            level_id int NOT NULL,
+            FOREIGN KEY (level_id) REFERENCES level (id)
             );
 
             Create table if not exists answer (
@@ -26,9 +26,7 @@
             correct boolean NOT NULL,
             text varchar NOT NULL,
             question_id int NOT NULL,
-            form_id int NOT NULL,
-            FOREIGN KEY (question_id) REFERENCES question (id),
-            FOREIGN KEY (form_id) REFERENCES form (id)
+            FOREIGN KEY (question_id) REFERENCES question (id)
             );
 
         </sql>
