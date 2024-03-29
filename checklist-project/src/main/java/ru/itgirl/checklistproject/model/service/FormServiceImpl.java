@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FormServiceImpl implements FormService {
     private final FormRepository formRepository;
-    private final AnswerService answerService;
     private final AnswerRepository answerRepository;
     private final LevelRepository levelRepository;
     private final QuestionRepository questionRepository;
