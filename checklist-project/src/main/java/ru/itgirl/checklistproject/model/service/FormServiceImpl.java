@@ -7,10 +7,7 @@ import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
 import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.entity.Suggestion;
-import ru.itgirl.checklistproject.model.repository.AnswerRepository;
-import ru.itgirl.checklistproject.model.repository.FormRepository;
-import ru.itgirl.checklistproject.model.repository.LevelRepository;
-import ru.itgirl.checklistproject.model.repository.QuestionRepository;
+import ru.itgirl.checklistproject.model.repository.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -26,6 +23,7 @@ public class FormServiceImpl implements FormService {
     private final AnswerRepository answerRepository;
     private final LevelRepository levelRepository;
     private final QuestionRepository questionRepository;
+    private final SuggestionRepository suggestionRepository;
 
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
@@ -48,6 +46,8 @@ public class FormServiceImpl implements FormService {
                 }
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
+                } else {
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
                 }
             }
         }
