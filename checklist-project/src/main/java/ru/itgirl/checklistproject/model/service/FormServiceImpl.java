@@ -29,8 +29,8 @@ public class FormServiceImpl implements FormService {
     public FormDto createForm(FormCreateDto formCreateDto) {
         Set<Answer> answers = new HashSet<>();
         Set<Suggestion> suggestions = new HashSet<>();
-        List<AnswerCreateDto> answerDtos = formCreateDto.getAnswers();
-        for (AnswerCreateDto answerDto : answerDtos) {
+        List<AnswerCreateDtoForms> answerDtos = formCreateDto.getAnswers();
+        for (AnswerCreateDtoForms answerDto : answerDtos) {
             Answer answer = answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
                     , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow();
             answers.add(answer);
@@ -64,8 +64,8 @@ public class FormServiceImpl implements FormService {
     @Override
     public FormDto updateForm(FormUpdateDto formUpdateDto) {
         Set<Answer> newAnswers = new HashSet<>();
-        List<AnswerCreateDto> answerDtos = formUpdateDto.getAnswers();
-        for (AnswerCreateDto answerDto : answerDtos) {
+        List<AnswerCreateDtoForms> answerDtos = formUpdateDto.getAnswers();
+        for (AnswerCreateDtoForms answerDto : answerDtos) {
             newAnswers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
                     , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
         }

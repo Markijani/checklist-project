@@ -19,6 +19,7 @@ public class QuestionServiceImpl implements QuestionService {
     private final SuggestionService suggestionService;
     private final LevelRepository levelRepository;
     private final SuggestionRepository suggestionRepository;
+    private final AnswerService answerService;
 
     @Override
     public List<QuestionDto> getAllQuestions() {
@@ -47,6 +48,10 @@ public class QuestionServiceImpl implements QuestionService {
                 questionCreateDto.getSuggestions()) {
             suggestionService.createSuggestion(suggestion, questionId);
         }
+        for (AnswerCreateDtoQuestions answer :
+                questionCreateDto.getAnswers()) {
+            answerService.createAnswer(question, answer.getAnswerText(), answer.isCorrect());
+        }
         return convertEntityToDto(question);
     }
 
@@ -57,6 +62,14 @@ public class QuestionServiceImpl implements QuestionService {
         question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
         question.setIncluded(questionUpdateDto.isIncluded());
         Question savedQuestion = questionRepository.save(question);
+        for (SuggestionCreateDto suggestion :
+                questionUpdateDto.getSuggestions()) {
+            suggestionService.createSuggestion(suggestion, questionUpdateDto.getId());
+        }
+        for (AnswerCreateDtoQuestions answer :
+                questionUpdateDto.getAnswers()) {
+            answerService.createAnswer(question, answer.getAnswerText(), answer.isCorrect());
+        }
         return convertEntityToDto(savedQuestion);
     }
 

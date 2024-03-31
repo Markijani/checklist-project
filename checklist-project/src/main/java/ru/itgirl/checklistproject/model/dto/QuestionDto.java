@@ -16,5 +16,5 @@ public class QuestionDto {
     private String level;
     private boolean included;
     private String text;
-    private List <AnswerDto> answers;
+    private List<AnswerDto> answers;
 }

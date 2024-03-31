@@ -14,5 +14,5 @@ import java.util.List;
 public class FormCreateDto {
     private String token;
     private String role;
-    private List<AnswerCreateDto> answers;
+    private List<AnswerCreateDtoForms> answers;
 }

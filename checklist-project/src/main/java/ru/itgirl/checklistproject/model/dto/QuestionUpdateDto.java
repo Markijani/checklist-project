@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -14,4 +16,6 @@ public class QuestionUpdateDto {
     private String level;
     private boolean included;
     private String text;
+    private List<SuggestionCreateDto> suggestions;
+    private List<AnswerCreateDtoQuestions> answers;
 }

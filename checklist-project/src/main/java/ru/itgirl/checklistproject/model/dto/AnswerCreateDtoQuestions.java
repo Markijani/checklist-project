@@ -5,13 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormUpdateDto {
-    private String token;
-    private List<AnswerCreateDtoForms> answers;
+public class AnswerCreateDtoQuestions {
+    private String answerText;
+    private boolean correct;
 }

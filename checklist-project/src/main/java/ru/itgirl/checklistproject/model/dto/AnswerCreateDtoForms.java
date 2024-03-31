@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnswerCreateDto {
+public class AnswerCreateDtoForms {
     private String question;
     private String answerText;
 }
