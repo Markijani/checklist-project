@@ -2,10 +2,7 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.checklistproject.model.dto.AnswerCreateDto;
-import ru.itgirl.checklistproject.model.dto.FormCreateDto;
-import ru.itgirl.checklistproject.model.dto.FormDto;
-import ru.itgirl.checklistproject.model.dto.LevelDto;
+import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
 import ru.itgirl.checklistproject.model.entity.Level;
@@ -43,6 +40,23 @@ public class FormServiceImpl implements FormService {
                 .createdAt(LocalDateTime.now())
                 .answers(answers)
                 .build();
+        return convertEntityToDto(formRepository.save(form));
+    }
+
+    @Override
+    public FormDto updateForm(FormUpdateDto formUpdateDto) {
+        Set<Answer> newAnswers = new HashSet<>();
+        List<AnswerCreateDto> answerDtos = formUpdateDto.getAnswers();
+        for (AnswerCreateDto answerDto : answerDtos) {
+            newAnswers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
+                    ,questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
+        }
+
+        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
+        Set <Answer> oldAnswers = form.getAnswers();
+        Set<Answer> allAnswers = new HashSet<>(newAnswers);
+        allAnswers.addAll(oldAnswers);
+        form.setAnswers(allAnswers);
         return convertEntityToDto(formRepository.save(form));
     }
 
@@ -98,6 +112,8 @@ public class FormServiceImpl implements FormService {
                 .createdAt(form.getCreatedAt().toString())
                 .answers(answerDtos)
                 .levels(levelDtos)
+                .suggestions(form.getSuggestions().stream().map(suggestion ->
+                        SuggestionDto.builder().name(suggestion.getName()).link(suggestion.getLink()).build()).toList())
                 .build();
     }
 }

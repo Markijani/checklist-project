@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
 import ru.itgirl.checklistproject.model.dto.FormDto;
+import ru.itgirl.checklistproject.model.dto.FormUpdateDto;
 import ru.itgirl.checklistproject.model.service.FormService;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class FormController {
     @PostMapping("form/create")
     FormDto createForm(@RequestBody FormCreateDto formCreateDto) {
         return formService.createForm(formCreateDto);
+    }
+
+    @PutMapping("form/create")
+    FormDto createForm(@RequestBody FormUpdateDto formUpdateDto) {
+        return formService.updateForm(formUpdateDto);
     }
 
     @GetMapping("/forms")
