@@ -19,7 +19,7 @@ public class Answer {
     @ManyToMany(mappedBy = "answers")
     private Set<Form> forms;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Question question;
 

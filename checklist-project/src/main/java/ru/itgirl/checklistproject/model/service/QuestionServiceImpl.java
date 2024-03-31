@@ -3,12 +3,15 @@ package ru.itgirl.checklistproject.model.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.*;
+import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,15 +47,13 @@ public class QuestionServiceImpl implements QuestionService {
     public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
         Long questionId = question.getId();
-        for (SuggestionCreateDto suggestion :
-                questionCreateDto.getSuggestions()) {
-            suggestionService.createSuggestion(suggestion, questionId);
-        }
+        Set <Answer> answers = new HashSet<>();
         for (AnswerCreateDtoQuestions answer :
                 questionCreateDto.getAnswers()) {
-            answerService.createAnswer(question, answer.getAnswerText(), answer.isCorrect());
+            answers.add(answerService.createAnswer(questionId, answer.getAnswerText(), answer.isCorrect()));
         }
-        return convertEntityToDto(question);
+        question.setAnswers(answers);
+        return convertEntityToDto(questionRepository.save(question));
     }
 
     @Override
@@ -62,15 +63,13 @@ public class QuestionServiceImpl implements QuestionService {
         question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
         question.setIncluded(questionUpdateDto.isIncluded());
         Question savedQuestion = questionRepository.save(question);
-        for (SuggestionCreateDto suggestion :
-                questionUpdateDto.getSuggestions()) {
-            suggestionService.createSuggestion(suggestion, questionUpdateDto.getId());
-        }
+        Set <Answer> answers = new HashSet<>();
         for (AnswerCreateDtoQuestions answer :
                 questionUpdateDto.getAnswers()) {
-            answerService.createAnswer(question, answer.getAnswerText(), answer.isCorrect());
+            answers.add(answerService.createAnswer(questionUpdateDto.getId(), answer.getAnswerText(), answer.isCorrect()));
         }
-        return convertEntityToDto(savedQuestion);
+        savedQuestion.setAnswers(answers);
+        return convertEntityToDto(questionRepository.save(savedQuestion));
     }
 
     @Override

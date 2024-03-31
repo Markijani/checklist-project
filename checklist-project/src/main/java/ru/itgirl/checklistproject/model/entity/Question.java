@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,5 +31,6 @@ public class Question {
     private Level level;
 
     @OneToMany(mappedBy = "question")
-    private List<Answer> answers;
+    @Setter
+    private Set<Answer> answers;
 }

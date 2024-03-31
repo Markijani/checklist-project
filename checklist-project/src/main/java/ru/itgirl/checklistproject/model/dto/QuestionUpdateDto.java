@@ -16,6 +16,5 @@ public class QuestionUpdateDto {
     private String level;
     private boolean included;
     private String text;
-    private List<SuggestionCreateDto> suggestions;
     private List<AnswerCreateDtoQuestions> answers;
 }

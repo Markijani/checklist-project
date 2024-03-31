@@ -17,12 +17,12 @@ public class AnswerServiceImpl implements AnswerService {
     private final QuestionRepository questionRepository;
 
     @Override
-    public void createAnswer(Question question, String text, boolean correct) {
+    public Answer createAnswer(Long questionId, String answerText, boolean correct) {
         Answer answer = Answer.builder()
-                .question(questionRepository.findById(question.getId()).orElseThrow())
-                .text(text)
+                .question(questionRepository.findById(questionId).orElseThrow())
+                .text(answerText)
                 .correct(correct)
                 .build();
-        answerRepository.save(answer);
+       return answerRepository.save(answer);
     }
 }
