@@ -75,6 +75,24 @@ public class FormServiceImpl implements FormService {
         Set<Answer> allAnswers = new HashSet<>(newAnswers);
         allAnswers.addAll(oldAnswers);
         form.setAnswers(allAnswers);
+        Set<Suggestion> suggestions = new HashSet<>();
+        for (Level level : levelRepository.findAll()) {
+            List<Answer> answersLevel = allAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            if (!answersLevel.isEmpty()) {
+                double correctAnswers = 0;
+                for (Answer answer : answersLevel) {
+                    if (answer.isCorrect()) {
+                        correctAnswers++;
+                    }
+                }
+                if (correctAnswers / answersLevel.size() <= 0.4) {
+                    suggestions.addAll(level.getSuggestions());
+                } else {
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                }
+            }
+        }
+        form.setSuggestions(suggestions);
         return convertEntityToDto(formRepository.save(form));
     }
 
@@ -132,7 +150,10 @@ public class FormServiceImpl implements FormService {
                 .answers(answerDtos)
                 .levels(levelDtos)
                 .suggestions(form.getSuggestions().stream().map(suggestion ->
-                        SuggestionDto.builder().name(suggestion.getName()).link(suggestion.getLink()).build()).toList())
+                        SuggestionDto.builder()
+                                .name(suggestion.getName())
+                                .link(suggestion.getLink())
+                                .build()).toList())
                 .build();
     }
 }

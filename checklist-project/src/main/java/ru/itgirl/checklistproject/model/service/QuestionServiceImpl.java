@@ -79,6 +79,10 @@ public class QuestionServiceImpl implements QuestionService {
                 .level(question.getLevel().getName())
                 .included(question.getIncluded())
                 .text(question.getText())
+                .answers(question.getAnswers().stream()
+                        .map(answer -> AnswerDto.builder()
+                                .answerText(answer.getText())
+                                .correct(answer.isCorrect()).build()).collect(Collectors.toList()))
                 .build();
     }
 }

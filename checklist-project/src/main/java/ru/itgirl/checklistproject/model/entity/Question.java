@@ -3,6 +3,7 @@ package ru.itgirl.checklistproject.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -28,4 +29,7 @@ public class Question {
     @JoinColumn(name = "level_id")
     @Setter
     private Level level;
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 }
