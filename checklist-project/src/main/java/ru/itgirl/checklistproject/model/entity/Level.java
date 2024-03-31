@@ -22,4 +22,7 @@ public class Level {
 
     @OneToMany(mappedBy = "level")
     private List<Question> questions;
+
+    @OneToMany(mappedBy = "level")
+    private List<Suggestion> suggestions;
 }

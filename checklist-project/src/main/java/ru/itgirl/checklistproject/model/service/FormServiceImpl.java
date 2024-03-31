@@ -6,6 +6,7 @@ import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Form;
 import ru.itgirl.checklistproject.model.entity.Level;
+import ru.itgirl.checklistproject.model.entity.Suggestion;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.FormRepository;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
@@ -29,16 +30,33 @@ public class FormServiceImpl implements FormService {
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
         Set<Answer> answers = new HashSet<>();
+        Set<Suggestion> suggestions = new HashSet<>();
         List<AnswerCreateDto> answerDtos = formCreateDto.getAnswers();
         for (AnswerCreateDto answerDto : answerDtos) {
-            answers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
-                    ,questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
+            Answer answer = answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
+                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow();
+            answers.add(answer);
+        }
+        for (Level level : levelRepository.findAll()) {
+            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            if (!answersLevel.isEmpty()) {
+                double correctAnswers = 0;
+                for (Answer answer : answersLevel) {
+                    if (answer.isCorrect()) {
+                        correctAnswers++;
+                    }
+                }
+                if (correctAnswers / answersLevel.size() <= 0.4) {
+                    suggestions.addAll(level.getSuggestions());
+                }
+            }
         }
         Form form = Form.builder()
                 .token(formCreateDto.getToken())
                 .role(formCreateDto.getRole())
                 .createdAt(LocalDateTime.now())
                 .answers(answers)
+                .suggestions(suggestions)
                 .build();
         return convertEntityToDto(formRepository.save(form));
     }
@@ -49,11 +67,11 @@ public class FormServiceImpl implements FormService {
         List<AnswerCreateDto> answerDtos = formUpdateDto.getAnswers();
         for (AnswerCreateDto answerDto : answerDtos) {
             newAnswers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
-                    ,questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
+                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
         }
 
         Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
-        Set <Answer> oldAnswers = form.getAnswers();
+        Set<Answer> oldAnswers = form.getAnswers();
         Set<Answer> allAnswers = new HashSet<>(newAnswers);
         allAnswers.addAll(oldAnswers);
         form.setAnswers(allAnswers);
@@ -102,9 +120,10 @@ public class FormServiceImpl implements FormService {
                 levelDtos.set(levelDtos.indexOf(levelDto), levelDto);
             }
         }
-        List<AnswerCreateDto> answerDtos = answers.stream().map(answer -> AnswerCreateDto.builder()
+        List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
                 .answerText(answer.getText())
                 .question(answer.getQuestion().getText())
+                .correct(answer.isCorrect())
                 .build()).toList();
         return FormDto.builder()
                 .token(form.getToken())

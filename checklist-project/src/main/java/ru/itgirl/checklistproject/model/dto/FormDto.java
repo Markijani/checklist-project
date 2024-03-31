@@ -16,6 +16,6 @@ public class FormDto {
     private String role;
     private String createdAt;
     private List<LevelDto> levels;
-    private List<AnswerCreateDto> answers;
+    private List<AnswerDto> answers;
     private List<SuggestionDto> suggestions;
 }
