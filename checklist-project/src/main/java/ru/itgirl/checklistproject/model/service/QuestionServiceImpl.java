@@ -2,16 +2,16 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.itgirl.checklistproject.model.dto.*;
-import ru.itgirl.checklistproject.model.entity.Answer;
+import ru.itgirl.checklistproject.model.dto.AnswerDto;
+import ru.itgirl.checklistproject.model.dto.QuestionCreateDto;
+import ru.itgirl.checklistproject.model.dto.QuestionDto;
+import ru.itgirl.checklistproject.model.dto.QuestionUpdateDto;
 import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,7 +73,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private QuestionDto convertEntityToDto(Question question) {
-        List <AnswerDto> answers = null;
+        List<AnswerDto> answers = null;
         if (question.getAnswers() != null) {
             answers = question.getAnswers().stream()
                     .map(answer -> AnswerDto.builder()

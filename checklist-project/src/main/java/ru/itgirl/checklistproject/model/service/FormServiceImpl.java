@@ -12,7 +12,6 @@ import ru.itgirl.checklistproject.model.repository.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -172,6 +171,7 @@ public class FormServiceImpl implements FormService {
         form.setLevels(levels);
         return convertEntityToDto(formRepository.save(form));
     }
+
     @Override
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();

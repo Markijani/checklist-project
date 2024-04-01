@@ -11,5 +11,6 @@ import java.util.List;
 public interface LevelRepository extends JpaRepository<Level, Long> {
 
     Level findLevelByName(String name);
+
     List<Level> findLevelByForms(Form form);
 }
