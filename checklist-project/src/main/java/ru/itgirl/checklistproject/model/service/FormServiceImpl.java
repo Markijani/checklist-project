@@ -65,6 +65,7 @@ public class FormServiceImpl implements FormService {
     public FormDto createFormAnswId(FormCreateDtoAnswId formCreateDto) {
         Set<Answer> answers = new HashSet<>();
         Set<Suggestion> suggestions = new HashSet<>();
+        Set<Level> levels = new HashSet<>();
         List<Long> answersIds = formCreateDto.getAnswersId();
         for (Long answerId : answersIds) {
             Answer answer = answerRepository.findById(answerId).orElseThrow();
@@ -73,6 +74,7 @@ public class FormServiceImpl implements FormService {
         for (Level level : levelRepository.findAll()) {
             List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
             if (!answersLevel.isEmpty()) {
+                levels.add(level);
                 double correctAnswers = 0;
                 for (Answer answer : answersLevel) {
                     if (answer.isCorrect()) {
@@ -92,6 +94,7 @@ public class FormServiceImpl implements FormService {
                 .createdAt(LocalDateTime.now())
                 .answers(answers)
                 .suggestions(suggestions)
+                .levels(levels)
                 .build();
         return convertEntityToDto(formRepository.save(form));
     }
@@ -111,9 +114,11 @@ public class FormServiceImpl implements FormService {
         allAnswers.addAll(oldAnswers);
         form.setAnswers(allAnswers);
         Set<Suggestion> suggestions = new HashSet<>();
+        Set<Level> levels = new HashSet<>();
         for (Level level : levelRepository.findAll()) {
             List<Answer> answersLevel = allAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
             if (!answersLevel.isEmpty()) {
+                levels.add(level);
                 double correctAnswers = 0;
                 for (Answer answer : answersLevel) {
                     if (answer.isCorrect()) {
@@ -128,6 +133,7 @@ public class FormServiceImpl implements FormService {
             }
         }
         form.setSuggestions(suggestions);
+        form.setLevels(levels);
         return convertEntityToDto(formRepository.save(form));
     }
 
@@ -156,23 +162,12 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormsId(form.getId());
-        List<Level> levels = levelRepository.findAll();
+        List<Level> levels = levelRepository.findLevelByForms(form);
         List<LevelDto> levelDtos = levels.stream().map(level ->
                 LevelDto.builder()
                         .name(level.getName())
-                        .completed(false)
+                        .id(level.getId())
                         .build()).collect(Collectors.toList());
-        for (Answer answer : answers) {
-            Level completedLevel = answer.getQuestion().getLevel();
-            Optional<LevelDto> completedLevelDto = levelDtos.stream()
-                    .filter(level -> level.getName().equals(completedLevel.getName()))
-                    .findAny();
-            if (completedLevelDto.isPresent()) {
-                LevelDto levelDto = completedLevelDto.get();
-                levelDto.setCompleted(true);
-                levelDtos.set(levelDtos.indexOf(levelDto), levelDto);
-            }
-        }
         List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
                 .id(answer.getId())
                 .answerText(answer.getText())
@@ -184,7 +179,7 @@ public class FormServiceImpl implements FormService {
                 .role(form.getRole())
                 .createdAt(form.getCreatedAt().toString())
                 .answers(answerDtos)
-                .levels(levelDtos)
+                .completedLevels(levelDtos)
                 .suggestions(form.getSuggestions().stream().map(suggestion ->
                         SuggestionDto.builder()
                                 .name(suggestion.getName())

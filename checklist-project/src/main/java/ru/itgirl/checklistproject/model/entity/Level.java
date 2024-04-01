@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,4 +26,7 @@ public class Level {
 
     @OneToMany(mappedBy = "level")
     private List<Suggestion> suggestions;
+
+    @ManyToMany(mappedBy = "levels")
+    private Set<Form> forms;
 }

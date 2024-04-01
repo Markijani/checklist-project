@@ -41,4 +41,10 @@ public class Form {
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = " suggestion_id", referencedColumnName = "id"))
     private Set<Suggestion> suggestions;
+
+    @ManyToMany
+    @JoinTable(name = "level_form",
+            joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = " level_id", referencedColumnName = "id"))
+    private Set<Level> levels;
 }

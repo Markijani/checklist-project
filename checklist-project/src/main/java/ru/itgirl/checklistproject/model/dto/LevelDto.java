@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LevelDto {
+    private Long id;
     private String name;
-    private boolean completed;
 }
