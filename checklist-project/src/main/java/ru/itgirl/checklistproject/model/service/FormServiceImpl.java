@@ -138,6 +138,41 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
+    public FormDto updateFormAnswId(FormUpdateDtoAnswId formUpdateDto) {
+        Set<Answer> newAnswers = new HashSet<>();
+        List<Long> answersId = formUpdateDto.getAnswersId();
+        for (Long answerID : answersId) {
+            newAnswers.add(answerRepository.findById(answerID).orElseThrow());
+        }
+        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
+        Set<Answer> oldAnswers = form.getAnswers();
+        Set<Answer> allAnswers = new HashSet<>(newAnswers);
+        allAnswers.addAll(oldAnswers);
+        form.setAnswers(allAnswers);
+        Set<Suggestion> suggestions = new HashSet<>();
+        Set<Level> levels = new HashSet<>();
+        for (Level level : levelRepository.findAll()) {
+            List<Answer> answersLevel = allAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            if (!answersLevel.isEmpty()) {
+                levels.add(level);
+                double correctAnswers = 0;
+                for (Answer answer : answersLevel) {
+                    if (answer.isCorrect()) {
+                        correctAnswers++;
+                    }
+                }
+                if (correctAnswers / answersLevel.size() <= 0.4) {
+                    suggestions.addAll(level.getSuggestions());
+                } else {
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                }
+            }
+        }
+        form.setSuggestions(suggestions);
+        form.setLevels(levels);
+        return convertEntityToDto(formRepository.save(form));
+    }
+    @Override
     public List<FormDto> getAllForms() {
         List<Form> forms = formRepository.findAll();
         return forms.stream().map(this::convertEntityToDto).collect(Collectors.toList());

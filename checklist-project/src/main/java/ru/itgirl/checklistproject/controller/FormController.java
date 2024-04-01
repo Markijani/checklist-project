@@ -2,10 +2,7 @@ package ru.itgirl.checklistproject.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.itgirl.checklistproject.model.dto.FormCreateDto;
-import ru.itgirl.checklistproject.model.dto.FormCreateDtoAnswId;
-import ru.itgirl.checklistproject.model.dto.FormDto;
-import ru.itgirl.checklistproject.model.dto.FormUpdateDto;
+import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.service.FormService;
 
 import java.util.List;
@@ -29,6 +26,10 @@ public class FormController {
     @PutMapping("form/update")
     FormDto createForm(@RequestBody FormUpdateDto formUpdateDto) {
         return formService.updateForm(formUpdateDto);
+    }
+    @PutMapping("form/updateAnswID")
+    FormDto createForm(@RequestBody FormUpdateDtoAnswId formUpdateDto) {
+        return formService.updateFormAnswId(formUpdateDto);
     }
 
     @GetMapping("/forms")
