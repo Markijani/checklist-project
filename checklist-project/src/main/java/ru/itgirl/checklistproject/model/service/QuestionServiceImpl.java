@@ -77,6 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (question.getAnswers() != null) {
             answers = question.getAnswers().stream()
                     .map(answer -> AnswerDto.builder()
+                            .id(answer.getId())
                             .answerText(answer.getText())
                             .correct(answer.isCorrect()).build()).toList();
         }
