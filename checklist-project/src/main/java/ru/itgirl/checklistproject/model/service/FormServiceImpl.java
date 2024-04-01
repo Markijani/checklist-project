@@ -28,6 +28,7 @@ public class FormServiceImpl implements FormService {
     public FormDto createForm(FormCreateDto formCreateDto) {
         Set<Answer> answers = new HashSet<>();
         Set<Suggestion> suggestions = new HashSet<>();
+        Set<Level> levels = new HashSet<>();
         List<AnswerCreateDtoForms> answerDtos = formCreateDto.getAnswers();
         for (AnswerCreateDtoForms answerDto : answerDtos) {
             Answer answer = answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
@@ -37,6 +38,7 @@ public class FormServiceImpl implements FormService {
         for (Level level : levelRepository.findAll()) {
             List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
             if (!answersLevel.isEmpty()) {
+                levels.add(level);
                 double correctAnswers = 0;
                 for (Answer answer : answersLevel) {
                     if (answer.isCorrect()) {
@@ -56,6 +58,7 @@ public class FormServiceImpl implements FormService {
                 .createdAt(LocalDateTime.now())
                 .answers(answers)
                 .suggestions(suggestions)
+                .levels(levels)
                 .build();
         return convertEntityToDto(formRepository.save(form));
     }
