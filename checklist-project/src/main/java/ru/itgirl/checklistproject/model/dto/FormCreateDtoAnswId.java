@@ -7,13 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@NoArgsConstructor
-@AllArgsConstructor
 @Data
 @Builder
-public class QuestionUpdateDto {
-    private Long id;
-    private String level;
-    private boolean included;
-    private String text;
+@AllArgsConstructor
+@NoArgsConstructor
+public class FormCreateDtoAnswId {
+    private String token;
+    private String role;
+    private List<Long> answersId;
 }

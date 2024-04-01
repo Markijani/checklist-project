@@ -46,14 +46,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
-        Long questionId = question.getId();
-        Set <Answer> answers = new HashSet<>();
-        for (AnswerCreateDtoQuestions answer :
-                questionCreateDto.getAnswers()) {
-            answers.add(answerService.createAnswer(questionId, answer.getAnswerText(), answer.isCorrect()));
-        }
-        question.setAnswers(answers);
-        return convertEntityToDto(questionRepository.save(question));
+        return convertEntityToDto(question);
     }
 
     @Override
@@ -63,13 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
         question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
         question.setIncluded(questionUpdateDto.isIncluded());
         Question savedQuestion = questionRepository.save(question);
-        Set <Answer> answers = new HashSet<>();
-        for (AnswerCreateDtoQuestions answer :
-                questionUpdateDto.getAnswers()) {
-            answers.add(answerService.createAnswer(questionUpdateDto.getId(), answer.getAnswerText(), answer.isCorrect()));
-        }
-        savedQuestion.setAnswers(answers);
-        return convertEntityToDto(questionRepository.save(savedQuestion));
+        return convertEntityToDto(savedQuestion);
     }
 
     @Override
@@ -86,15 +73,19 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     private QuestionDto convertEntityToDto(Question question) {
+        List <AnswerDto> answers = null;
+        if (question.getAnswers() != null) {
+            answers = question.getAnswers().stream()
+                    .map(answer -> AnswerDto.builder()
+                            .answerText(answer.getText())
+                            .correct(answer.isCorrect()).build()).toList();
+        }
         return QuestionDto.builder()
                 .id(question.getId())
                 .level(question.getLevel().getName())
                 .included(question.getIncluded())
                 .text(question.getText())
-                .answers(question.getAnswers().stream()
-                        .map(answer -> AnswerDto.builder()
-                                .answerText(answer.getText())
-                                .correct(answer.isCorrect()).build()).collect(Collectors.toList()))
+                .answers(answers)
                 .build();
     }
 }

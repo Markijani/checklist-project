@@ -3,6 +3,7 @@ package ru.itgirl.checklistproject.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.itgirl.checklistproject.model.dto.FormCreateDto;
+import ru.itgirl.checklistproject.model.dto.FormCreateDtoAnswId;
 import ru.itgirl.checklistproject.model.dto.FormDto;
 import ru.itgirl.checklistproject.model.dto.FormUpdateDto;
 import ru.itgirl.checklistproject.model.service.FormService;
@@ -18,6 +19,10 @@ public class FormController {
     @PostMapping("form/create")
     FormDto createForm(@RequestBody FormCreateDto formCreateDto) {
         return formService.createForm(formCreateDto);
+    }
+    @PostMapping("form/createAnswId")
+    FormDto createForm(@RequestBody FormCreateDtoAnswId formCreateDto) {
+        return formService.createFormAnswId(formCreateDto);
     }
 
     @PutMapping("form/update")

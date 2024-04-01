@@ -62,6 +62,41 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
+    public FormDto createFormAnswId(FormCreateDtoAnswId formCreateDto) {
+        Set<Answer> answers = new HashSet<>();
+        Set<Suggestion> suggestions = new HashSet<>();
+        List<Long> answersIds = formCreateDto.getAnswersId();
+        for (Long answerId : answersIds) {
+            Answer answer = answerRepository.findById(answerId).orElseThrow();
+            answers.add(answer);
+        }
+        for (Level level : levelRepository.findAll()) {
+            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            if (!answersLevel.isEmpty()) {
+                double correctAnswers = 0;
+                for (Answer answer : answersLevel) {
+                    if (answer.isCorrect()) {
+                        correctAnswers++;
+                    }
+                }
+                if (correctAnswers / answersLevel.size() <= 0.4) {
+                    suggestions.addAll(level.getSuggestions());
+                } else {
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                }
+            }
+        }
+        Form form = Form.builder()
+                .token(formCreateDto.getToken())
+                .role(formCreateDto.getRole())
+                .createdAt(LocalDateTime.now())
+                .answers(answers)
+                .suggestions(suggestions)
+                .build();
+        return convertEntityToDto(formRepository.save(form));
+    }
+
+    @Override
     public FormDto updateForm(FormUpdateDto formUpdateDto) {
         Set<Answer> newAnswers = new HashSet<>();
         List<AnswerCreateDtoForms> answerDtos = formUpdateDto.getAnswers();
@@ -139,6 +174,7 @@ public class FormServiceImpl implements FormService {
             }
         }
         List<AnswerDto> answerDtos = answers.stream().map(answer -> AnswerDto.builder()
+                .id(answer.getId())
                 .answerText(answer.getText())
                 .question(answer.getQuestion().getText())
                 .correct(answer.isCorrect())
