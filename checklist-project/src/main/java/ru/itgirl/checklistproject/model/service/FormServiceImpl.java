@@ -198,8 +198,8 @@ public class FormServiceImpl implements FormService {
     private FormDto convertEntityToDto(Form form) {
         List<Answer> answers = answerRepository.findAnswerByFormsId(form.getId());
         List<Level> levels = levelRepository.findLevelByForms(form);
-        List<LevelDto> levelDtos = levels.stream().map(level ->
-                LevelDto.builder()
+        List<LevelDtoForm> levelDtos = levels.stream().map(level ->
+                LevelDtoForm.builder()
                         .name(level.getName())
                         .id(level.getId())
                         .build()).collect(Collectors.toList());

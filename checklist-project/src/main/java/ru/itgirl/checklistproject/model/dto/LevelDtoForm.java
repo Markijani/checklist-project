@@ -5,14 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LevelDto {
+public class LevelDtoForm {
     private Long id;
     private String name;
-    private List<QuestionDto> questions;
 }
