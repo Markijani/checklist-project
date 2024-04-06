@@ -15,4 +15,5 @@ public class LevelDto {
     private Long id;
     private String name;
     private List<QuestionDto> questions;
+    private List<SuggestionDto> suggestions;
 }
