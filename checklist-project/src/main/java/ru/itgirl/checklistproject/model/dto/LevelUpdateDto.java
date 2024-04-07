@@ -17,6 +17,5 @@ public class LevelUpdateDto {
     private Long id;
     private String name;
     private List<Question> questions;
-
     private List<Suggestion> suggestions;
 }
