@@ -54,7 +54,6 @@ public class QuestionServiceImpl implements QuestionService {
         Question question = questionRepository.findById(questionUpdateDto.getId()).orElseThrow();
         question.setText(questionUpdateDto.getText());
         question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
-        question.setIncluded(questionUpdateDto.isIncluded());
         Question savedQuestion = questionRepository.save(question);
         return convertEntityToDto(savedQuestion);
     }
@@ -67,7 +66,6 @@ public class QuestionServiceImpl implements QuestionService {
     public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
         return Question.builder()
                 .text(questionCreateDto.getText())
-                .included(questionCreateDto.getIncluded())
                 .level(levelRepository.findLevelByName(questionCreateDto.getLevel()))
                 .build();
     }
@@ -84,7 +82,6 @@ public class QuestionServiceImpl implements QuestionService {
         return QuestionDto.builder()
                 .id(question.getId())
                 .level(question.getLevel().getName())
-                .included(question.getIncluded())
                 .text(question.getText())
                 .answers(answers)
                 .build();

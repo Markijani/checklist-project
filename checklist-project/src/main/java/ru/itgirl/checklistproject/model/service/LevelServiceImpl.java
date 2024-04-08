@@ -28,7 +28,6 @@ public class LevelServiceImpl implements LevelService {
                 .questions(level.getQuestions().stream().map(question -> QuestionDto.builder()
                         .id(question.getId())
                         .text(question.getText())
-                        .included(question.getIncluded())
                         .answers(question.getAnswers().stream().map(answer -> AnswerDto.builder()
                                 .id(answer.getId()).answerText(answer.getText()).correct(answer.isCorrect())
                                 .build()).collect(Collectors.toList()))

@@ -12,6 +12,5 @@ import lombok.NoArgsConstructor;
 public class QuestionUpdateDto {
     private Long id;
     private String level;
-    private boolean included;
     private String text;
 }

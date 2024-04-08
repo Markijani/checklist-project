@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QuestionCreateDto {
     private String text;
-    private Boolean included;
     private String level;
 }
