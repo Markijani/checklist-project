@@ -21,10 +21,6 @@ public class Question {
     @Setter
     private String text;
 
-    @Column(nullable = false)
-    @Setter
-    private Boolean included;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
     @Setter
