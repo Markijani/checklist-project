@@ -11,7 +11,7 @@
     <groupId>ru.itgirl</groupId>
     <artifactId>checklist-project</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
     <name>checklist-project</name>
     <description>Simple web-application</description>
     <properties>

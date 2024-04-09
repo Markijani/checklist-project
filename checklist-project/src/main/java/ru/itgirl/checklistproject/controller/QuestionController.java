@@ -26,11 +26,6 @@ public class QuestionController {
         return questionService.getQuestionById(id);
     }
 
-    @GetMapping("questions/included")
-    List<QuestionDto> getQuestionsByIncluded(@RequestParam("included") boolean included) {
-        return questionService.getQuestionsByIncluded(included);
-    }
-
     @PostMapping("question/create")
     QuestionDto createQuestion(@RequestBody QuestionCreateDto questionCreateDto) {
         return questionService.createQuestion(questionCreateDto);

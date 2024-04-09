@@ -36,14 +36,6 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public List<QuestionDto> getQuestionsByIncluded(boolean included) {
-        List<Question> questions = questionRepository.findQuestionsByIncluded(included);
-        return questions.stream()
-                .map(this::convertEntityToDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
         Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
         return convertEntityToDto(question);

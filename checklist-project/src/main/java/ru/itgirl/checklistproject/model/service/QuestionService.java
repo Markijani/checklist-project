@@ -14,8 +14,6 @@ public interface QuestionService {
 
     QuestionDto getQuestionById(Long id);
 
-    List<QuestionDto> getQuestionsByIncluded(boolean included);
-
     QuestionDto updateQuestion(QuestionUpdateDto questionUpdateDto);
 
     void deleteQuestion(Long id);
