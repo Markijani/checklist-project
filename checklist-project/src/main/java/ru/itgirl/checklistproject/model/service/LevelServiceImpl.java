@@ -3,8 +3,10 @@ package ru.itgirl.checklistproject.model.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.*;
+import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.entity.Question;
+import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
@@ -18,6 +20,7 @@ public class LevelServiceImpl implements LevelService {
     private final LevelRepository levelRepository;
     private final QuestionRepository questionRepository;
     private final SuggestionRepository suggestionRepository;
+    private final AnswerRepository answerRepository;
 
     @Override
     public List<LevelDto> getAllLevelsAndQuestions() {
@@ -47,6 +50,17 @@ public class LevelServiceImpl implements LevelService {
                 question.setLevel(level);
                 questionRepository.save(question);
                 level.getQuestions().add(question);
+                for (Answer answer : question.getAnswers()) {
+                    if (answer.getId() != null) {
+                        Answer existingAnswer = answerRepository.findById(answer.getId()).orElseThrow();
+                        existingAnswer.setText(answer.getText());
+                        existingAnswer.setCorrect(answer.isCorrect());
+                        answerRepository.save(existingAnswer);
+                    } else {
+                        answer.setQuestion(question);
+                        answerRepository.save(answer);
+                    }
+                }
             }
         }
         if (levelUpdateDto.getSuggestions() != null) {
