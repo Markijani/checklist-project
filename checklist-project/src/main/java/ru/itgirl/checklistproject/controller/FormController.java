@@ -49,7 +49,7 @@ public class FormController {
     }
 
     @DeleteMapping("/form/delete/{id}")
-    void deleteBook(@PathVariable("id") Long id) {
+    void deleteForm(@PathVariable("id") Long id) {
         formService.deleteForm(id);
     }
 }
