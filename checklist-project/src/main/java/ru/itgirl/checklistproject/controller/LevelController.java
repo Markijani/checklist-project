@@ -1,17 +1,13 @@
 package ru.itgirl.checklistproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
-import org.springframework.data.crossstore.ChangeSetPersister;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 import ru.itgirl.checklistproject.model.dto.LevelDto;
 import ru.itgirl.checklistproject.model.dto.LevelUpdateDto;
-import ru.itgirl.checklistproject.model.dto.QuestionDto;
-import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.service.LevelService;
-import ru.itgirl.checklistproject.model.service.QuestionService;
 
 import java.util.List;
 
@@ -26,7 +22,7 @@ public class LevelController {
     }
 
     @PutMapping("level/update")
-    LevelDto updateLevel(@RequestBody  LevelUpdateDto levelUpdateDto) {
+    LevelDto updateLevel(@RequestBody LevelUpdateDto levelUpdateDto) {
         return levelService.updateLevel(levelUpdateDto);
     }
 

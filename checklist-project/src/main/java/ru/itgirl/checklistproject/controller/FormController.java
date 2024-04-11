@@ -43,7 +43,7 @@ public class FormController {
         return formService.getFormById(id);
     }
 
-    @GetMapping("/forms/token")
+    @GetMapping("/form/token")
     FormDto getFormsByGroup(@RequestParam("token") String token) {
         return formService.getFormByToken(token);
     }

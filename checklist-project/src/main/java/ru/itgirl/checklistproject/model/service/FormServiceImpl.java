@@ -144,14 +144,11 @@ public class FormServiceImpl implements FormService {
             newAnswers.add(answerRepository.findById(answerID).orElseThrow());
         }
         Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
-        Set<Answer> oldAnswers = form.getAnswers();
-        Set<Answer> allAnswers = new HashSet<>(newAnswers);
-        allAnswers.addAll(oldAnswers);
-        form.setAnswers(allAnswers);
+        form.setAnswers(newAnswers);
         Set<Suggestion> suggestions = new HashSet<>();
         Set<Level> levels = new HashSet<>();
         for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = allAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
             if (!answersLevel.isEmpty()) {
                 levels.add(level);
                 double correctAnswers = 0;

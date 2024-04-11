@@ -11,7 +11,9 @@ import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,15 +43,19 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public LevelDto updateLevel(LevelUpdateDto levelUpdateDto) {
         Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
+        // delete all old questions
+        Set <Question> oldQuestions = level.getQuestions();
+        for (Question question:
+             oldQuestions) {
+            question.setLevel(null);
+        }
         if (levelUpdateDto.getName() != null) {
             level.setName(levelUpdateDto.getName());
         }
         if (levelUpdateDto.getQuestions() != null) {
-            level.getQuestions().clear();
             for (Question question : levelUpdateDto.getQuestions()) {
                 question.setLevel(level);
                 questionRepository.save(question);
-                level.getQuestions().add(question);
                 for (Answer answer : question.getAnswers()) {
                     if (answer.getId() != null) {
                         Answer existingAnswer = answerRepository.findById(answer.getId()).orElseThrow();
@@ -68,8 +74,8 @@ public class LevelServiceImpl implements LevelService {
             level.getSuggestions().addAll(levelUpdateDto.getSuggestions());
             suggestionRepository.saveAll(level.getSuggestions());
         }
-        level = levelRepository.save(level);
-        return convertEntityToDto(level);
+        Level updatedLevel = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
+        return convertEntityToDto(updatedLevel);
     }
 
     private LevelDto convertEntityToDto(Level level) {
@@ -79,7 +85,6 @@ public class LevelServiceImpl implements LevelService {
                 .questions(level.getQuestions().stream()
                         .map(question -> QuestionDto.builder()
                                 .id(question.getId())
-                                .level(question.getLevel().getName())
                                 .text(question.getText())
                                 .answers(question.getAnswers().stream()
                                         .map(answer -> AnswerDto.builder()
