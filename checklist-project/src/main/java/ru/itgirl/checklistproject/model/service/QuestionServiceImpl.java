@@ -3,32 +3,17 @@ package ru.itgirl.checklistproject.model.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.AnswerDto;
-import ru.itgirl.checklistproject.model.dto.QuestionCreateDto;
 import ru.itgirl.checklistproject.model.dto.QuestionDto;
-import ru.itgirl.checklistproject.model.dto.QuestionUpdateDto;
 import ru.itgirl.checklistproject.model.entity.Question;
-import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
-import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
-    private final SuggestionService suggestionService;
-    private final LevelRepository levelRepository;
-    private final SuggestionRepository suggestionRepository;
-    private final AnswerService answerService;
-
-    @Override
-    public List<QuestionDto> getAllQuestions() {
-        List<Question> questions = questionRepository.findAll();
-        return questions.stream().map(this::convertEntityToDto).collect(Collectors.toList());
-    }
 
     @Override
     public QuestionDto getQuestionById(Long id) {
@@ -36,30 +21,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public QuestionDto createQuestion(QuestionCreateDto questionCreateDto) {
-        Question question = questionRepository.save(convertDtoToEntity(questionCreateDto));
-        return convertEntityToDto(question);
-    }
-
-    @Override
-    public QuestionDto updateQuestion(QuestionUpdateDto questionUpdateDto) {
-        Question question = questionRepository.findById(questionUpdateDto.getId()).orElseThrow();
-        question.setText(questionUpdateDto.getText());
-        question.setLevel(levelRepository.findLevelByName(questionUpdateDto.getLevel()));
-        Question savedQuestion = questionRepository.save(question);
-        return convertEntityToDto(savedQuestion);
-    }
-
-    @Override
     public void deleteQuestion(Long id) {
         questionRepository.deleteById(id);
-    }
-
-    public Question convertDtoToEntity(QuestionCreateDto questionCreateDto) {
-        return Question.builder()
-                .text(questionCreateDto.getText())
-                .level(levelRepository.findLevelByName(questionCreateDto.getLevel()))
-                .build();
     }
 
     private QuestionDto convertEntityToDto(Question question) {
@@ -73,7 +36,6 @@ public class QuestionServiceImpl implements QuestionService {
         }
         return QuestionDto.builder()
                 .id(question.getId())
-                .level(question.getLevel().getName())
                 .text(question.getText())
                 .answers(answers)
                 .build();
