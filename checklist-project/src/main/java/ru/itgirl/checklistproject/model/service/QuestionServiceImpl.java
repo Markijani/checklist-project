@@ -8,6 +8,7 @@ import ru.itgirl.checklistproject.model.entity.Question;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto getQuestionById(Long id) {
-        return convertEntityToDto(questionRepository.findById(id).orElseThrow());
+        return convertEntityToDto(questionRepository.findById(id).orElseThrow(() -> new NoSuchElementException("This question does not exist")));
     }
 
     @Override
