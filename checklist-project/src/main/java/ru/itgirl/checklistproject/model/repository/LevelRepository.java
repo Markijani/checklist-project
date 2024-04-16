@@ -9,6 +9,5 @@ import java.util.List;
 
 @Repository
 public interface LevelRepository extends JpaRepository<Level, Long> {
-
     List<Level> findLevelByForms(Form form);
 }

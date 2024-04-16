@@ -5,11 +5,10 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet id="delete not null level_id" author="author morozevich">
+    <changeSet id="delete answers in forms" author="author morozevich">
         <sql>
 
-            ALTER TABLE question
-            ALTER COLUMN level_id DROP NOT NULL;
+           DROP TABLE answer_form;
 
         </sql>
     </changeSet>

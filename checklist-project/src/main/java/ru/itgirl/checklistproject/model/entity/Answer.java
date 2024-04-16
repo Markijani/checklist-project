@@ -16,9 +16,6 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany(mappedBy = "answers")
-    private Set<Form> forms;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     @Setter

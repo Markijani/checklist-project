@@ -31,12 +31,6 @@ public class Form {
     private String role;
 
     @ManyToMany
-    @JoinTable(name = "answer_form",
-            joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = " answer_id", referencedColumnName = "id"))
-    private Set<Answer> answers;
-
-    @ManyToMany
     @JoinTable(name = "suggestion_form",
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = " suggestion_id", referencedColumnName = "id"))

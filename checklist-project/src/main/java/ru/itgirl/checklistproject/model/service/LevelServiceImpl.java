@@ -6,6 +6,7 @@ import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Level;
 import ru.itgirl.checklistproject.model.entity.Question;
+import ru.itgirl.checklistproject.model.entity.Suggestion;
 import ru.itgirl.checklistproject.model.repository.AnswerRepository;
 import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
@@ -44,37 +45,43 @@ public class LevelServiceImpl implements LevelService {
     public LevelDto updateLevel(LevelUpdateDto levelUpdateDto) {
         Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
         // delete all old questions
-        Set <Question> oldQuestions = level.getQuestions();
-        for (Question question:
-             oldQuestions) {
-            question.setLevel(null);
+        for (Question oldQuestion : level.getQuestions()) {
+        questionRepository.deleteById(oldQuestion.getId());
         }
+        // update level
+        HashSet <Question> newQuestions = new HashSet<>();
+        HashSet <Suggestion> newSuggestions = new HashSet<>();
         if (levelUpdateDto.getName() != null) {
             level.setName(levelUpdateDto.getName());
         }
         if (levelUpdateDto.getQuestions() != null) {
             for (Question question : levelUpdateDto.getQuestions()) {
                 question.setLevel(level);
-                questionRepository.save(question);
-                for (Answer answer : question.getAnswers()) {
-                    if (answer.getId() != null) {
-                        Answer existingAnswer = answerRepository.findById(answer.getId()).orElseThrow();
-                        existingAnswer.setText(answer.getText());
-                        existingAnswer.setCorrect(answer.isCorrect());
-                        answerRepository.save(existingAnswer);
-                    } else {
-                        answer.setQuestion(question);
-                        answerRepository.save(answer);
-                    }
+                Question saved = questionRepository.save(question);
+                HashSet <Answer> answers = new HashSet<>();
+                for (Answer answer: question.getAnswers()) {
+                    answer.setQuestion(saved);
+                    answers.add(answer);
+                    answerRepository.save(answer);
                 }
+                saved.setAnswers(answers);
+                newQuestions.add(questionRepository.save(saved));
             }
         }
         if (levelUpdateDto.getSuggestions() != null) {
-            level.getSuggestions().clear();
-            level.getSuggestions().addAll(levelUpdateDto.getSuggestions());
-            suggestionRepository.saveAll(level.getSuggestions());
+            //delete old suggestions
+            for (Suggestion suggestion: level.getSuggestions()) {
+                suggestionRepository.deleteById(suggestion.getId());
+            }
+            // add new
+            newSuggestions.addAll(levelUpdateDto.getSuggestions());
+            for (Suggestion newSuggestion: levelUpdateDto.getSuggestions()) {
+                suggestionRepository.save(newSuggestion);
+            }
         }
-        Level updatedLevel = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
+        level.setQuestions(newQuestions);
+        level.setSuggestions(newSuggestions);
+        Level updatedLevel = levelRepository.save(level);
         return convertEntityToDto(updatedLevel);
     }
 
