@@ -514,15 +514,15 @@ get-запрос /levelsAndQuestions - все темы с вопросами и 
       "text": "Новый вопрос1?",
       "answers": [
         {
-          "answerText": "Новый ответ1",
+          "text": "Новый ответ1",
           "correct": false
         },
         {
-          "answerText": "Новый ответ2",
+          "text": "Новый ответ2",
           "correct": false
         },
         {
-          "answerText": "Новый ответ3",
+          "text": "Новый ответ3",
           "correct": true
         }
       ]
@@ -531,15 +531,15 @@ get-запрос /levelsAndQuestions - все темы с вопросами и 
       "text": "Новый вопрос2?",
       "answers": [
         {
-          "answerText": "Новый ответ1",
+          "text": "Новый ответ1",
           "correct": false
         },
         {
-          "answerText": "Новый ответ2",
+          "text": "Новый ответ2",
           "correct": false
         },
         {
-          "answerText": "Новый ответ3",
+          "text": "Новый ответ3",
           "correct": true
         }
       ]
