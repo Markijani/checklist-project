@@ -1,12 +1,10 @@
 package ru.itgirl.checklistproject.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.itgirl.checklistproject.model.dto.LevelDto;
 import ru.itgirl.checklistproject.model.dto.LevelUpdateDto;
+import ru.itgirl.checklistproject.model.dto.QuestionDto;
 import ru.itgirl.checklistproject.model.service.LevelService;
 
 import java.util.List;
@@ -19,6 +17,10 @@ public class LevelController {
     @GetMapping("/levelsAndQuestions")
     List<LevelDto> getQuestionsView() {
         return levelService.getAllLevelsAndQuestions();
+    }
+    @GetMapping("/level/{id}")
+    LevelDto getLevelById(@PathVariable("id") Long id) {
+        return levelService.getLevelById(id);
     }
 
     @PutMapping("level/update")

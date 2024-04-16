@@ -32,6 +32,11 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
+    public LevelDto getLevelById (Long id){
+        return convertEntityToDto(levelRepository.findById(id).orElseThrow());
+    }
+
+    @Override
     public LevelDto updateLevel(LevelUpdateDto levelUpdateDto) {
         Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
         // delete all old questions
