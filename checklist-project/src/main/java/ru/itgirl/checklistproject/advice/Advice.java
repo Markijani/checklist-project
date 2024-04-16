@@ -12,9 +12,8 @@ import java.util.NoSuchElementException;
 public class Advice {
 
     @ExceptionHandler({NoSuchElementException.class, NonUniqueResultException.class})
-    public ResponseEntity <Response> handleException(Exception e) {
+    public ResponseEntity<Response> handleException(Exception e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
 }
