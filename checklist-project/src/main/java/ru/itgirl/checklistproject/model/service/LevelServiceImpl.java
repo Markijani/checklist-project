@@ -12,9 +12,7 @@ import ru.itgirl.checklistproject.model.repository.LevelRepository;
 import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,12 +31,17 @@ public class LevelServiceImpl implements LevelService {
 
     @Override
     public LevelDto getLevelById (Long id){
-        return convertEntityToDto(levelRepository.findById(id).orElseThrow());
+        Optional <Level> level = levelRepository.findById(id);
+        if (level.isPresent()) {
+        return convertEntityToDto(level.get());}
+        else {
+         throw new NoSuchElementException("Level with this id does not exist");
+        }
     }
 
     @Override
     public LevelDto updateLevel(LevelUpdateDto levelUpdateDto) {
-        Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow();
+        Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow(() -> new NoSuchElementException("Level with this id does not exist"));
         // delete all old questions
         for (Question oldQuestion : level.getQuestions()) {
         questionRepository.deleteById(oldQuestion.getId());

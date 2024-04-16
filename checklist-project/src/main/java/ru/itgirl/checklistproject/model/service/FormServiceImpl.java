@@ -12,6 +12,7 @@ import ru.itgirl.checklistproject.model.repository.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -32,7 +33,7 @@ public class FormServiceImpl implements FormService {
         List<AnswerCreateDtoForms> answerDtos = formCreateDto.getAnswers();
         for (AnswerCreateDtoForms answerDto : answerDtos) {
             Answer answer = answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
-                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow();
+                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow(() -> new NoSuchElementException ("This answer does not exist"))).orElseThrow(() -> new NoSuchElementException ("This question does not exist"));
             answers.add(answer);
         }
         for (Level level : levelRepository.findAll()) {
@@ -48,7 +49,7 @@ public class FormServiceImpl implements FormService {
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
                 } else {
-                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow(() -> new NoSuchElementException ("This suggestion does not exist")));
                 }
             }
         }
@@ -69,7 +70,7 @@ public class FormServiceImpl implements FormService {
         Set<Level> levels = new HashSet<>();
         List<Long> answersIds = formCreateDto.getAnswersId();
         for (Long answerId : answersIds) {
-            Answer answer = answerRepository.findById(answerId).orElseThrow();
+            Answer answer = answerRepository.findById(answerId).orElseThrow(() -> new NoSuchElementException ("This answer does not exist"));
             answers.add(answer);
         }
         for (Level level : levelRepository.findAll()) {
@@ -85,7 +86,7 @@ public class FormServiceImpl implements FormService {
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
                 } else {
-                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow(() -> new NoSuchElementException ("This suggestion does not exist")));
                 }
             }
         }
@@ -105,10 +106,10 @@ public class FormServiceImpl implements FormService {
         List<AnswerCreateDtoForms> answerDtos = formUpdateDto.getAnswers();
         for (AnswerCreateDtoForms answerDto : answerDtos) {
             newAnswers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
-                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow()).orElseThrow());
+                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow(() -> new NoSuchElementException ("This answer does not exist"))).orElseThrow(() -> new NoSuchElementException ("This question does not exist")));
         }
 
-        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
+        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow(() -> new NoSuchElementException ("Form with this token does not exist"));
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
@@ -124,7 +125,7 @@ public class FormServiceImpl implements FormService {
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
                 } else {
-                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow(() -> new NoSuchElementException ("This suggestion does not exist")));
                 }
             }
         }
@@ -138,9 +139,9 @@ public class FormServiceImpl implements FormService {
         Set<Answer> newAnswers = new HashSet<>();
         List<Long> answersId = formUpdateDto.getAnswersId();
         for (Long answerID : answersId) {
-            newAnswers.add(answerRepository.findById(answerID).orElseThrow());
+            newAnswers.add(answerRepository.findById(answerID).orElseThrow(() -> new NoSuchElementException ("This answer does not exist")));
         }
-        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow();
+        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow(() -> new NoSuchElementException ("Form with this token does not exist"));
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
@@ -156,7 +157,7 @@ public class FormServiceImpl implements FormService {
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
                 } else {
-                    suggestions.add(suggestionRepository.findById(1L).orElseThrow());
+                    suggestions.add(suggestionRepository.findById(1L).orElseThrow(() -> new NoSuchElementException ("This suggestion does not exist")));
                 }
             }
         }
@@ -173,12 +174,12 @@ public class FormServiceImpl implements FormService {
 
     @Override
     public FormDto getFormById(Long id) {
-        return convertEntityToDto(formRepository.findById(id).orElseThrow());
+        return convertEntityToDto(formRepository.findById(id).orElseThrow(() -> new NoSuchElementException ("This form does not exist")));
     }
 
     @Override
     public FormDto getFormByToken(String token) {
-        Form form = formRepository.findByToken(token).orElseThrow();
+        Form form = formRepository.findByToken(token).orElseThrow(() -> new NoSuchElementException ("Form with this token does not exist"));
         return convertEntityToDto(form);
     }
 
