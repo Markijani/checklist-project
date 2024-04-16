@@ -28,17 +28,7 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public List<LevelDto> getAllLevelsAndQuestions() {
         List<Level> levels = levelRepository.findAll();
-        return levels.stream().map(level -> LevelDto.builder()
-                .id(level.getId())
-                .name(level.getName())
-                .questions(level.getQuestions().stream().map(question -> QuestionDto.builder()
-                        .id(question.getId())
-                        .text(question.getText())
-                        .answers(question.getAnswers().stream().map(answer -> AnswerDto.builder()
-                                .id(answer.getId()).answerText(answer.getText()).correct(answer.isCorrect())
-                                .build()).collect(Collectors.toList()))
-                        .build()).collect(Collectors.toList()))
-                .build()).collect(Collectors.toList());
+        return levels.stream().map(this::convertEntityToDto).toList();
     }
 
     @Override
@@ -74,9 +64,10 @@ public class LevelServiceImpl implements LevelService {
                 suggestionRepository.deleteById(suggestion.getId());
             }
             // add new
-            newSuggestions.addAll(levelUpdateDto.getSuggestions());
             for (Suggestion newSuggestion: levelUpdateDto.getSuggestions()) {
+                newSuggestion.setLevel(level);
                 suggestionRepository.save(newSuggestion);
+                newSuggestions.add(newSuggestion);
             }
         }
         level.setQuestions(newQuestions);
@@ -104,7 +95,6 @@ public class LevelServiceImpl implements LevelService {
                         .collect(Collectors.toList()))
                 .suggestions(level.getSuggestions().stream()
                         .map(suggestion -> SuggestionDto.builder()
-                                .level(suggestion.getLevel())
                                 .name(suggestion.getName())
                                 .link(suggestion.getLink())
                                 .build())

@@ -26,7 +26,7 @@ public class Question {
     @Setter
     private Level level;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     @Setter
     private Set<Answer> answers;
 }

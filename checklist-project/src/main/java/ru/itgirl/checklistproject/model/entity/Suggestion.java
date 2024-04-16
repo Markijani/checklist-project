@@ -20,12 +20,13 @@ public class Suggestion {
     @Setter
     private String name;
 
-    @Column()
+    @Column
     @Setter
     private String link;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
+    @Setter
     private Level level;
 
     @ManyToMany(mappedBy = "suggestions")
