@@ -37,7 +37,7 @@ public class FormServiceImpl implements FormService {
             answers.add(answer);
         }
         for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).collect(Collectors.toList());
             if (!answersLevel.isEmpty()) {
                 levels.add(level);
                 double correctAnswers = 0;
@@ -74,7 +74,7 @@ public class FormServiceImpl implements FormService {
             answers.add(answer);
         }
         for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            List<Answer> answersLevel = answers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).collect(Collectors.toList());
             if (!answersLevel.isEmpty()) {
                 levels.add(level);
                 double correctAnswers = 0;
@@ -113,7 +113,7 @@ public class FormServiceImpl implements FormService {
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).collect(Collectors.toList());
             if (!answersLevel.isEmpty()) {
                 levels.add(level);
                 double correctAnswers = 0;
@@ -145,7 +145,7 @@ public class FormServiceImpl implements FormService {
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
+            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).collect(Collectors.toList());
             if (!answersLevel.isEmpty()) {
                 levels.add(level);
                 double correctAnswers = 0;
@@ -205,7 +205,7 @@ public class FormServiceImpl implements FormService {
                         SuggestionDto.builder()
                                 .name(suggestion.getName())
                                 .link(suggestion.getLink())
-                                .build()).toList())
+                                .build()).collect(Collectors.toList()))
                 .build();
     }
 }

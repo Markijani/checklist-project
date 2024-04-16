@@ -26,7 +26,7 @@ public class LevelServiceImpl implements LevelService {
     @Override
     public List<LevelDto> getAllLevelsAndQuestions() {
         List<Level> levels = levelRepository.findAll();
-        return levels.stream().map(this::convertEntityToDto).toList();
+        return levels.stream().map(this::convertEntityToDto).collect(Collectors.toList());
     }
 
     @Override

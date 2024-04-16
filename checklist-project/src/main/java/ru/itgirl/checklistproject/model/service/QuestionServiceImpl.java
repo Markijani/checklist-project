@@ -9,6 +9,7 @@ import ru.itgirl.checklistproject.model.repository.QuestionRepository;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
                     .map(answer -> AnswerDto.builder()
                             .id(answer.getId())
                             .answerText(answer.getText())
-                            .correct(answer.isCorrect()).build()).toList();
+                            .correct(answer.isCorrect()).build()).collect(Collectors.toList());
         }
         return QuestionDto.builder()
                 .id(question.getId())
