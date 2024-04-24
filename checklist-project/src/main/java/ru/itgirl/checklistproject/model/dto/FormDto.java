@@ -14,7 +14,6 @@ import java.util.List;
 public class FormDto {
     private Long id;
     private String token;
-    private String role;
     private String createdAt;
     private List<LevelDtoForm> completedLevels;
     private List<SuggestionDto> suggestions;

@@ -27,9 +27,6 @@ public class Form {
     @Column
     private String token;
 
-    @Column
-    private String role;
-
     @ManyToMany
     @JoinTable(name = "suggestion_form",
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),

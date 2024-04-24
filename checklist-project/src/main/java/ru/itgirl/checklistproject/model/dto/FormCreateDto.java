@@ -13,6 +13,4 @@ import java.util.List;
 @NoArgsConstructor
 public class FormCreateDto {
     private String token;
-    private String role;
-    private List<AnswerCreateDtoForms> answers;
 }
