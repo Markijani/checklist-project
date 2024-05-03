@@ -5,7 +5,7 @@ get-запрос /forms - все анкеты
 
 get-запрос /form/1 - анкета с id 1. Выдает ответ с кодом 200 и json c полем message: "This form does not exist", если формы не существует
 
-get-запрос /forms/qwertyui - анкеты с токеном qwertyui. Важно! Если вы положите две анкеты с одинаковыми токенами вернется ответ с сообщением "query did not return a unique result".  Выдает ответ с кодом 200 и json c полем message: "Form with this token does not exist", если формы не существует
+get-запрос form/token?token=qwertyui - анкеты с токеном qwertyui. Важно! Если вы положите две анкеты с одинаковыми токенами вернется ответ с сообщением "query did not return a unique result".  Выдает ответ с кодом 200 и json c полем message: "Form with this token does not exist", если формы не существует
 
 В данной анкете - пройдено 2 темы (они отражены в "completedLevels"). К теме CSS, в которой дано менее 40 % правильных
 ответов, дано предложение в "suggestions".
