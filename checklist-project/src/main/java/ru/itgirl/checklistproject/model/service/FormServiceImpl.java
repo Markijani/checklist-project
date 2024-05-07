@@ -28,6 +28,10 @@ public class FormServiceImpl implements FormService {
         Form form = Form.builder()
                 .token(formCreateDto.getToken())
                 .createdAt(LocalDateTime.now())
+                .name(formCreateDto.getName())
+                .surname(formCreateDto.getSurname())
+                .email(formCreateDto.getEmail())
+                .groupNum(formCreateDto.getGroupNum())
                 .build();
         return convertEntityToDtoAdmin(formRepository.save(form));
     }

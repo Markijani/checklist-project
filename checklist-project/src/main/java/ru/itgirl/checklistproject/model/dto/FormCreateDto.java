@@ -13,4 +13,8 @@ import java.util.List;
 @NoArgsConstructor
 public class FormCreateDto {
     private String token;
+    private String name;
+    private String surname;
+    private String email;
+    private Integer groupNum;
 }
