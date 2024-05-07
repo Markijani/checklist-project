@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.itgirl.checklistproject.model.entity.Question;
+import ru.itgirl.checklistproject.model.entity.Suggestion;
 
 import java.util.List;
 
@@ -11,8 +13,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestionDto {
+public class LevelUpdateDto {
     private Long id;
-    private String text;
-    private List<AnswerDto> answers;
+    private String name;
+    private List<Question> questions;
+    private List<Suggestion> suggestions;
 }

@@ -12,10 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormDto {
+    private Long id;
     private String token;
-    private String role;
     private String createdAt;
     private List<LevelDtoForm> completedLevels;
-    private List<AnswerDto> answers;
     private List<SuggestionDto> suggestions;
 }

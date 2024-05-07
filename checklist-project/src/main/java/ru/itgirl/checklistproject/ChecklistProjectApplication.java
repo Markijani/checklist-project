@@ -9,5 +9,4 @@ public class ChecklistProjectApplication {
     public static void main(String[] args) {
         SpringApplication.run(ChecklistProjectApplication.class, args);
     }
-
 }

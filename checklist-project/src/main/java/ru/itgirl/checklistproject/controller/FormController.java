@@ -18,17 +18,12 @@ public class FormController {
         return formService.createForm(formCreateDto);
     }
 
-    @PostMapping("form/createAnswId")
-    FormDto createForm(@RequestBody FormCreateDtoAnswId formCreateDto) {
-        return formService.createFormAnswId(formCreateDto);
-    }
-
     @PutMapping("form/update")
     FormDto createForm(@RequestBody FormUpdateDto formUpdateDto) {
         return formService.updateForm(formUpdateDto);
     }
 
-    @PutMapping("form/updateAnswID")
+    @PutMapping("form/updateAnswId")
     FormDto createForm(@RequestBody FormUpdateDtoAnswId formUpdateDto) {
         return formService.updateFormAnswId(formUpdateDto);
     }
@@ -43,13 +38,13 @@ public class FormController {
         return formService.getFormById(id);
     }
 
-    @GetMapping("/forms/token")
+    @GetMapping("/form/token")
     FormDto getFormsByGroup(@RequestParam("token") String token) {
         return formService.getFormByToken(token);
     }
 
     @DeleteMapping("/form/delete/{id}")
-    void deleteBook(@PathVariable("id") Long id) {
+    void deleteForm(@PathVariable("id") Long id) {
         formService.deleteForm(id);
     }
 }

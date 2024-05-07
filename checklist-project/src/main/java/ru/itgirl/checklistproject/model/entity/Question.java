@@ -14,22 +14,19 @@ import java.util.Set;
 public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Setter
     private Long id;
 
     @Column(nullable = false)
     @Setter
     private String text;
 
-    @Column(nullable = false)
-    @Setter
-    private Boolean included;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
     @Setter
     private Level level;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE)
     @Setter
     private Set<Answer> answers;
 }

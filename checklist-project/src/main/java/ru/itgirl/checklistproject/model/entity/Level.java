@@ -3,7 +3,6 @@ package ru.itgirl.checklistproject.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @AllArgsConstructor
@@ -22,10 +21,12 @@ public class Level {
     private String name;
 
     @OneToMany(mappedBy = "level")
-    private List<Question> questions;
+    @Setter
+    private Set<Question> questions;
 
     @OneToMany(mappedBy = "level")
-    private List<Suggestion> suggestions;
+    @Setter
+    private Set<Suggestion> suggestions;
 
     @ManyToMany(mappedBy = "levels")
     private Set<Form> forms;

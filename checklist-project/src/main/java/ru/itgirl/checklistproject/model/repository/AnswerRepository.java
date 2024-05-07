@@ -10,9 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-
-    List<Answer> findAnswerByFormsId(Long id);
-
-
     Optional<Answer> findByTextAndQuestion(String text, Question question);
 }
