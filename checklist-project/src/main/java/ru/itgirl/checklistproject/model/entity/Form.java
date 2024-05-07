@@ -1,12 +1,10 @@
 package ru.itgirl.checklistproject.model.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 
@@ -27,6 +25,18 @@ public class Form {
     @Column
     private String token;
 
+    @Column
+    private String name;
+
+    @Column
+    private String surname;
+
+    @Column
+    private String email;
+
+    @Column
+    private Integer groupNum;
+
     @ManyToMany
     @JoinTable(name = "suggestion_form",
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
@@ -38,4 +48,7 @@ public class Form {
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = " level_id", referencedColumnName = "id"))
     private Set<Level> levels;
+
+    @OneToMany(mappedBy = "form")
+    private List<WrongAnswer> wrongAnswers;
 }

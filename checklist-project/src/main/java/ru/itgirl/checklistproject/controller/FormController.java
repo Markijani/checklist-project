@@ -39,8 +39,13 @@ public class FormController {
     }
 
     @GetMapping("/form/token")
-    FormDto getFormsByGroup(@RequestParam("token") String token) {
+    FormDto getFormsByTokenAdmin(@RequestParam("token") String token) {
         return formService.getFormByToken(token);
+    }
+
+    @GetMapping("/form/tokenUser")
+    FormDtoUser getFormsByTokenUser(@RequestParam("token") String token) {
+        return formService.getFormByTokenUser(token);
     }
 
     @DeleteMapping("/form/delete/{id}")

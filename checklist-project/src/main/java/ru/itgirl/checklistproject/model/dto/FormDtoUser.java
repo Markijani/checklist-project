@@ -12,14 +12,14 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FormDto {
+public class FormDtoUser {
     private Long id;
     private String token;
     private String name;
     private String surname;
     private String email;
     private Integer groupNum;
-    private String createdAt;
     private List<LevelDtoForm> completedLevels;
-    private Set<String> weakTopics;
+    private List<SuggestionDto> suggestions;
+    private List <WrongAnswerDto> wrongAnswers;
 }

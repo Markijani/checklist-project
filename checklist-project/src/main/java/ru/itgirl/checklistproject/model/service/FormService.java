@@ -17,5 +17,7 @@ public interface FormService {
 
     FormDto getFormByToken(String token);
 
+    FormDtoUser getFormByTokenUser(String token);
+
     void deleteForm(Long id);
 }

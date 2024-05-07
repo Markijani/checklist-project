@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="add wrongAnswer" author="author morozovna">
+        <sql>
+
+            CREATE TABLE if not exists wrong_answer (
+            id bigserial PRIMARY KEY,
+            topic VARCHAR,
+            question VARCHAR,
+            user_answer VARCHAR,
+            right_answer VARCHAR,
+            form_id INT,
+            FOREIGN KEY (form_id) REFERENCES form (id)
+            );
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>
