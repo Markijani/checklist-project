@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -14,7 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class FormDtoUser {
     private Long id;
-    private String token;
+    private String uid;
     private String name;
     private String surname;
     private String email;

@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class FormDto {
     private Long id;
-    private String token;
+    private String uid;
     private String name;
     private String surname;
     private String email;

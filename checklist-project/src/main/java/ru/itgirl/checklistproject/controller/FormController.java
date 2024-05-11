@@ -38,14 +38,14 @@ public class FormController {
         return formService.getFormById(id);
     }
 
-    @GetMapping("/form/token")
-    FormDto getFormsByTokenAdmin(@RequestParam("token") String token) {
-        return formService.getFormByToken(token);
+    @GetMapping("/form/uid")
+    FormDto getFormsByTokenAdmin(@RequestParam("uid") String token) {
+        return formService.getFormByUid(token);
     }
 
-    @GetMapping("/form/tokenUser")
-    FormDtoUser getFormsByTokenUser(@RequestParam("token") String token) {
-        return formService.getFormByTokenUser(token);
+    @GetMapping("/form/uidUser")
+    FormDtoUser getFormsByTokenUser(@RequestParam("uid") String token) {
+        return formService.getFormByUidUser(token);
     }
 
     @DeleteMapping("/form/delete/{id}")

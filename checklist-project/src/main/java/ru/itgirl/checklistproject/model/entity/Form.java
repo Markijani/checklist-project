@@ -22,8 +22,8 @@ public class Form {
     @Column(name = "createdat")
     private LocalDateTime createdAt;
 
-    @Column
-    private String token;
+    @Column(name = "token")
+    private String uid;
 
     @Column
     private String name;

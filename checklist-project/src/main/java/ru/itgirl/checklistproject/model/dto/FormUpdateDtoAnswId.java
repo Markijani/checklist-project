@@ -12,6 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FormUpdateDtoAnswId {
-    private String token;
+    private String uid;
     private List<Long> answersId;
 }

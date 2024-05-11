@@ -20,13 +20,12 @@ public class FormServiceImpl implements FormService {
     private final AnswerRepository answerRepository;
     private final LevelRepository levelRepository;
     private final QuestionRepository questionRepository;
-    private final SuggestionRepository suggestionRepository;
     private final WrongAnswerRepository wrongAnswerRepository;
 
     @Override
     public FormDto createForm(FormCreateDto formCreateDto) {
         Form form = Form.builder()
-                .token(formCreateDto.getToken())
+                .uid(formCreateDto.getUid())
                 .createdAt(LocalDateTime.now())
                 .name(formCreateDto.getName())
                 .surname(formCreateDto.getSurname())
@@ -45,7 +44,7 @@ public class FormServiceImpl implements FormService {
                     , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow(() -> new NoSuchElementException("This answer does not exist"))).orElseThrow(() -> new NoSuchElementException("This question does not exist")));
         }
 
-        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow(() -> new NoSuchElementException("Form with this token does not exist"));
+        Form form = formRepository.findByUid(formUpdateDto.getUid()).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
@@ -56,12 +55,20 @@ public class FormServiceImpl implements FormService {
                 for (Answer answer : answersLevel) {
                     if (answer.isCorrect()) {
                         correctAnswers++;
+                    } else {
+                        WrongAnswer wrongAnswer = new WrongAnswer();
+                        Question question = answer.getQuestion();
+                        String correctAnswer = question.getAnswers().stream().filter(Answer::isCorrect).findAny().orElseThrow(() -> new NoSuchElementException("Correct answer does not exist")).getText();
+                        wrongAnswer.setForm(form);
+                        wrongAnswer.setRightAnswer(correctAnswer);
+                        wrongAnswer.setUserAnswer(answer.getText());
+                        wrongAnswer.setQuestion(question.getText());
+                        wrongAnswer.setTopic(answer.getQuestion().getLevel().getName());
+                        wrongAnswerRepository.save(wrongAnswer);
                     }
                 }
                 if (correctAnswers / answersLevel.size() <= 0.4) {
                     suggestions.addAll(level.getSuggestions());
-                } else {
-                    suggestions.add(suggestionRepository.findById(1L).orElseThrow(() -> new NoSuchElementException("This suggestion does not exist")));
                 }
             }
         }
@@ -77,7 +84,7 @@ public class FormServiceImpl implements FormService {
         for (Long answerID : answersId) {
             newAnswers.add(answerRepository.findById(answerID).orElseThrow(() -> new NoSuchElementException("This answer does not exist")));
         }
-        Form form = formRepository.findByToken(formUpdateDto.getToken()).orElseThrow(() -> new NoSuchElementException("Form with this token does not exist"));
+        Form form = formRepository.findByUid(formUpdateDto.getUid()).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
         Set<Suggestion> suggestions = form.getSuggestions();
         Set<Level> levels = form.getLevels();
         for (Level level : levelRepository.findAll()) {
@@ -91,7 +98,7 @@ public class FormServiceImpl implements FormService {
                     } else {
                         WrongAnswer wrongAnswer = new WrongAnswer();
                         Question question = answer.getQuestion();
-                        String correctAnswer = question.getAnswers().stream().filter(Answer::isCorrect).findAny().orElseThrow(() -> new NoSuchElementException("Correct Answer does not exist")).getText();
+                        String correctAnswer = question.getAnswers().stream().filter(Answer::isCorrect).findAny().orElseThrow(() -> new NoSuchElementException("Correct answer does not exist")).getText();
                         wrongAnswer.setForm(form);
                         wrongAnswer.setRightAnswer(correctAnswer);
                         wrongAnswer.setUserAnswer(answer.getText());
@@ -122,14 +129,14 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public FormDto getFormByToken(String token) {
-        Form form = formRepository.findByToken(token).orElseThrow(() -> new NoSuchElementException("Form with this token does not exist"));
+    public FormDto getFormByUid(String uid) {
+        Form form = formRepository.findByUid(uid).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
         return convertEntityToDtoAdmin(form);
     }
 
     @Override
-    public FormDtoUser getFormByTokenUser(String token) {
-        Form form = formRepository.findByToken(token).orElseThrow(() -> new NoSuchElementException("Form with this token does not exist"));
+    public FormDtoUser getFormByUidUser(String uid) {
+        Form form = formRepository.findByUid(uid).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
         return convertEntityToDtoUser(form);
     }
 
@@ -154,7 +161,7 @@ public class FormServiceImpl implements FormService {
         }
         return FormDto.builder()
                 .id(form.getId())
-                .token(form.getToken())
+                .uid(form.getUid())
                 .name(form.getName())
                 .surname(form.getSurname())
                 .email(form.getEmail())
@@ -195,7 +202,7 @@ public class FormServiceImpl implements FormService {
         }
         return FormDtoUser.builder()
                 .id(form.getId())
-                .token(form.getToken())
+                .uid(form.getUid())
                 .name(form.getName())
                 .surname(form.getSurname())
                 .email(form.getEmail())
