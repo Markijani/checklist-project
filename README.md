@@ -5,12 +5,12 @@ get-запрос /forms - все анкеты
 
 get-запрос /form/1 - анкета с id 1. Выдает ответ с кодом 200 и json c полем message: "This form does not exist", если формы не существует
 
-get-запрос form/token?token=qwertyui - анкета с токеном qwertyui для администратора. 
+get-запрос form/uid?uid=sdfghjklhjkl - анкета с токеном sdfghjklhjkl для администратора. 
 
 ```json
 {
     "id": 5,
-    "token": "sdfghjklhjkl",
+    "uid": "sdfghjklhjkl",
     "name": "Маша",
     "surname": "Иванова",
     "email": "masha@gmail.com",
@@ -31,11 +31,11 @@ get-запрос form/token?token=qwertyui - анкета с токеном qwer
     ]
 }
 ```
-get-запрос form/tokenUser?token=qwertyui - анкеты с токеном qwertyui для пользователя. 
+get-запрос form/uidUser?uid=sdfghjklhjkl - анкеты с токеном sdfghjklhjkl для пользователя. 
 ```json
 {
     "id": 5,
-    "token": "sdfghjklhjkl",
+    "uid": "sdfghjklhjkl",
     "name": "Маша",
     "surname": "Иванова",
     "email": "masha@gmail.com",
@@ -109,7 +109,7 @@ post-запрос /form/create - в headers - content type: application/json
 
 ```json
 {
-    "token": "sdfghjklhjkl",
+    "uid": "sdfghjklhjkl",
     "name": "Маша",
     "surname": "Иванова",
     "groupNum": 82,
@@ -131,7 +131,7 @@ put-запрос /form/update в headers - content type: application/json
 
 ```json
 {
-  "token": "yuiop[]l",
+  "uid": "yuiop[]l",
   "answers": [
     {
       "question": "Какое свойство CSS используется для задания позиции элемента в HTML документе?",
@@ -167,7 +167,7 @@ put-запрос /form/updateAnswId в headers - content type: application/json
 
 ```json
 {
-  "token": "4567890-",
+  "uid": "4567890-",
   "answersId": [
     31,
     34,
