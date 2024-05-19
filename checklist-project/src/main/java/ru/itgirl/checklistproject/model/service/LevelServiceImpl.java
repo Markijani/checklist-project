@@ -103,8 +103,7 @@ public class LevelServiceImpl implements LevelService {
                         .collect(Collectors.toList()))
                 .suggestions(level.getSuggestions().stream()
                         .map(suggestion -> SuggestionDto.builder()
-                                .name(suggestion.getName())
-                                .link(suggestion.getLink())
+                                .links(level.getSuggestions().stream().map(Suggestion::getName).collect(Collectors.toList()))
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

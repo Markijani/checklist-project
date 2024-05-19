@@ -15,7 +15,7 @@ public class WrongAnswer {
     private Long id;
 
     @Column
-    private String topic;
+    private Long topicId;
 
     @Column
     private String question;

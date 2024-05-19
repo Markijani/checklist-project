@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="add wrongAnswer" author="author morozovna">
+        <sql>
+
+            ALTER TABLE wrong_answer
+            ADD topic_id INT;
+
+            ALTER TABLE wrong_answer
+            DROP COLUMN topic;
+
+        </sql>
+    </changeSet>
+</databaseChangeLog>

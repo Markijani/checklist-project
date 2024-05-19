@@ -7,10 +7,7 @@ import ru.itgirl.checklistproject.model.entity.*;
 import ru.itgirl.checklistproject.model.repository.*;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,7 +58,7 @@ public class FormServiceImpl implements FormService {
                         wrongAnswer.setRightAnswer(correctAnswer);
                         wrongAnswer.setUserAnswer(answer.getText());
                         wrongAnswer.setQuestion(question.getText());
-                        wrongAnswer.setTopic(answer.getQuestion().getLevel().getName());
+                        wrongAnswer.setTopicId(answer.getQuestion().getLevel().getId());
                         wrongAnswerRepository.save(wrongAnswer);
                     }
                 }
@@ -133,7 +130,7 @@ public class FormServiceImpl implements FormService {
     private FormDtoUser convertEntityToDtoUser(Form form) {
         List<LevelDtoForm> levelDtos = null;
         List<SuggestionDto> suggestions = null;
-        List<WrongAnswerDto> wrongAnswers = null;
+        List<WrongAnswerDto> wrongAnswers;
         if (form.getLevels() != null) {
             levelDtos = form.getLevels().stream().map(level ->
                     LevelDtoForm.builder()
@@ -141,21 +138,18 @@ public class FormServiceImpl implements FormService {
                             .id(level.getId())
                             .build()).collect(Collectors.toList());
         }
-        if (form.getWrongAnswers() != null) {
-            wrongAnswers = form.getWrongAnswers().stream().map(wrongAnswer ->
-                    WrongAnswerDto.builder()
-                            .rightAnswer(wrongAnswer.getRightAnswer())
-                            .topic(wrongAnswer.getTopic())
-                            .userAnswer(wrongAnswer.getUserAnswer())
-                            .question(wrongAnswer.getQuestion())
-                            .build()
-            ).collect(Collectors.toList());
-        }
-        if (form.getSuggestions() != null) {
-            suggestions = form.getSuggestions().stream().map(suggestion ->
+        if (form.getLevels() != null) {
+            suggestions = form.getLevels().stream().map(level ->
                     SuggestionDto.builder()
-                            .link(suggestion.getLink())
-                            .name(suggestion.getName())
+                            .title(level.getName())
+                            .links(level.getSuggestions().stream().map(Suggestion::getLink).collect(Collectors.toList()))
+                            .wrongAnswers(form.getWrongAnswers().stream().filter(answer -> Objects.equals(answer.getTopicId(), level.getId()))
+                                    .map(wrongAnswer ->
+                                            WrongAnswerDto.builder()
+                                                    .rightAnswer(wrongAnswer.getRightAnswer())
+                                                    .userAnswer(wrongAnswer.getUserAnswer())
+                                                    .question(wrongAnswer.getQuestion())
+                                                    .build()).collect(Collectors.toList()))
                             .build()).collect(Collectors.toList());
         }
         return FormDtoUser.builder()
@@ -166,7 +160,6 @@ public class FormServiceImpl implements FormService {
                 .email(form.getEmail())
                 .groupNum(form.getGroupNum())
                 .completedLevels(levelDtos)
-                .wrongAnswers(wrongAnswers)
                 .suggestions(suggestions)
                 .build();
     }

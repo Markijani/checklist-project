@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WrongAnswerDto {
-    private String topic;
     private String question;
     private String userAnswer;
     private String rightAnswer;

@@ -20,5 +20,4 @@ public class FormDtoUser {
     private Integer groupNum;
     private List<LevelDtoForm> completedLevels;
     private List<SuggestionDto> suggestions;
-    private List <WrongAnswerDto> wrongAnswers;
 }
