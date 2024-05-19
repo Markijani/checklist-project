@@ -18,11 +18,6 @@ public class FormController {
         return formService.createForm(formCreateDto);
     }
 
-    @PutMapping("form/update")
-    FormDto createForm(@RequestBody FormUpdateDto formUpdateDto) {
-        return formService.updateForm(formUpdateDto);
-    }
-
     @PutMapping("form/updateAnswId")
     FormDto createForm(@RequestBody FormUpdateDtoAnswId formUpdateDto) {
         return formService.updateFormAnswId(formUpdateDto);

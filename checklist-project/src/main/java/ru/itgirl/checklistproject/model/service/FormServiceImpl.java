@@ -36,48 +36,6 @@ public class FormServiceImpl implements FormService {
     }
 
     @Override
-    public FormDto updateForm(FormUpdateDto formUpdateDto) {
-        Set<Answer> newAnswers = new HashSet<>();
-        List<AnswerCreateDtoForms> answerDtos = formUpdateDto.getAnswers();
-        for (AnswerCreateDtoForms answerDto : answerDtos) {
-            newAnswers.add(answerRepository.findByTextAndQuestion(answerDto.getAnswerText()
-                    , questionRepository.findQuestionByText(answerDto.getQuestion()).orElseThrow(() -> new NoSuchElementException("This answer does not exist"))).orElseThrow(() -> new NoSuchElementException("This question does not exist")));
-        }
-
-        Form form = formRepository.findByUid(formUpdateDto.getUid()).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
-        Set<Suggestion> suggestions = form.getSuggestions();
-        Set<Level> levels = form.getLevels();
-        for (Level level : levelRepository.findAll()) {
-            List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
-            if (!answersLevel.isEmpty()) {
-                levels.add(level);
-                double correctAnswers = 0;
-                for (Answer answer : answersLevel) {
-                    if (answer.isCorrect()) {
-                        correctAnswers++;
-                    } else {
-                        WrongAnswer wrongAnswer = new WrongAnswer();
-                        Question question = answer.getQuestion();
-                        String correctAnswer = question.getAnswers().stream().filter(Answer::isCorrect).findAny().orElseThrow(() -> new NoSuchElementException("Correct answer does not exist")).getText();
-                        wrongAnswer.setForm(form);
-                        wrongAnswer.setRightAnswer(correctAnswer);
-                        wrongAnswer.setUserAnswer(answer.getText());
-                        wrongAnswer.setQuestion(question.getText());
-                        wrongAnswer.setTopic(answer.getQuestion().getLevel().getName());
-                        wrongAnswerRepository.save(wrongAnswer);
-                    }
-                }
-                if (correctAnswers / answersLevel.size() <= 0.4) {
-                    suggestions.addAll(level.getSuggestions());
-                }
-            }
-        }
-        form.setSuggestions(suggestions);
-        form.setLevels(levels);
-        return convertEntityToDtoAdmin(formRepository.save(form));
-    }
-
-    @Override
     public FormDto updateFormAnswId(FormUpdateDtoAnswId formUpdateDto) {
         Set<Answer> newAnswers = new HashSet<>();
         List<Long> answersId = formUpdateDto.getAnswersId();
