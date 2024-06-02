@@ -1,7 +1,10 @@
 package ru.itgirl.checklistproject.model.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,22 +41,17 @@ public class Form {
     private Integer groupNum;
 
     @ManyToMany
-    @JoinTable(name = "suggestion_form",
-            joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = " suggestion_id", referencedColumnName = "id"))
-    private Set<Suggestion> suggestions;
-
-    @ManyToMany
     @JoinTable(name = "level_form",
             joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = " level_id", referencedColumnName = "id"))
-    private Set<Level> levels;
+    private Set<Level> completedLevels;
+
+    @ManyToMany
+    @JoinTable(name = "weak_level_form",
+            joinColumns = @JoinColumn(name = "form_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = " level_id", referencedColumnName = "id"))
+    private Set<Level> weakLevels;
 
     @OneToMany(mappedBy = "form")
     private List<WrongAnswer> wrongAnswers;
-
-    public void removeSuggestion(Suggestion suggestion){
-        this.getSuggestions().remove(suggestion);
-        suggestion.getForms().remove(this);
-    }
 }

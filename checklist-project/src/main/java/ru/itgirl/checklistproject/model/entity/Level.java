@@ -28,6 +28,6 @@ public class Level {
     @Setter
     private Set<Suggestion> suggestions;
 
-    @ManyToMany(mappedBy = "levels")
+    @ManyToMany(mappedBy = "completedLevels")
     private Set<Form> forms;
 }

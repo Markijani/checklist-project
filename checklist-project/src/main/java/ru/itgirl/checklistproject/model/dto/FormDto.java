@@ -21,5 +21,5 @@ public class FormDto {
     private Integer groupNum;
     private String createdAt;
     private List<LevelDtoForm> completedLevels;
-    private Set<String> weakTopics;
+    private Set<LevelDtoForm> weakTopics;
 }

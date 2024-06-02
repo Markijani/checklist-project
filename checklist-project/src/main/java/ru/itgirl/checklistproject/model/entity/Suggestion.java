@@ -3,8 +3,6 @@ package ru.itgirl.checklistproject.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Set;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "suggestion")
@@ -28,7 +26,4 @@ public class Suggestion {
     @JoinColumn(name = "level_id")
     @Setter
     private Level level;
-
-    @ManyToMany(mappedBy = "suggestions")
-    private Set<Form> forms;
 }

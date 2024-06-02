@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface LevelService {
     List<LevelDto> getAllLevelsAndQuestions();
-    LevelDto getLevelById (Long id);
+
+    LevelDto getLevelById(Long id);
+
     LevelDto updateLevel(LevelUpdateDto updatedLevelDto);
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.itgirl.checklistproject.model.entity.Level;
 
 import java.util.List;
 
@@ -14,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SuggestionDto {
     private String title;
-    private List <String> links;
+    private List<String> links;
     private List<WrongAnswerDto> wrongAnswers;
 }

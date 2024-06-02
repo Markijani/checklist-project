@@ -3,10 +3,19 @@ package ru.itgirl.checklistproject.model.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.*;
-import ru.itgirl.checklistproject.model.entity.*;
-import ru.itgirl.checklistproject.model.repository.*;
+import ru.itgirl.checklistproject.model.entity.Answer;
+import ru.itgirl.checklistproject.model.entity.Level;
+import ru.itgirl.checklistproject.model.entity.Question;
+import ru.itgirl.checklistproject.model.entity.Suggestion;
+import ru.itgirl.checklistproject.model.repository.AnswerRepository;
+import ru.itgirl.checklistproject.model.repository.LevelRepository;
+import ru.itgirl.checklistproject.model.repository.QuestionRepository;
+import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,7 +25,6 @@ public class LevelServiceImpl implements LevelService {
     private final QuestionRepository questionRepository;
     private final SuggestionRepository suggestionRepository;
     private final AnswerRepository answerRepository;
-    private final FormRepository formRepository;
 
     @Override
     public List<LevelDto> getAllLevelsAndQuestions() {
@@ -25,12 +33,12 @@ public class LevelServiceImpl implements LevelService {
     }
 
     @Override
-    public LevelDto getLevelById (Long id){
-        Optional <Level> level = levelRepository.findById(id);
+    public LevelDto getLevelById(Long id) {
+        Optional<Level> level = levelRepository.findById(id);
         if (level.isPresent()) {
-        return convertEntityToDto(level.get());}
-        else {
-         throw new NoSuchElementException("Level with this id does not exist");
+            return convertEntityToDto(level.get());
+        } else {
+            throw new NoSuchElementException("Level with this id does not exist");
         }
     }
 
@@ -39,11 +47,11 @@ public class LevelServiceImpl implements LevelService {
         Level level = levelRepository.findById(levelUpdateDto.getId()).orElseThrow(() -> new NoSuchElementException("Level with this id does not exist"));
         // delete all old questions
         for (Question oldQuestion : level.getQuestions()) {
-        questionRepository.deleteById(oldQuestion.getId());
+            questionRepository.deleteById(oldQuestion.getId());
         }
         // update level
-        HashSet <Question> newQuestions = new HashSet<>();
-        HashSet <Suggestion> newSuggestions = new HashSet<>();
+        HashSet<Question> newQuestions = new HashSet<>();
+        HashSet<Suggestion> newSuggestions = new HashSet<>();
         if (levelUpdateDto.getName() != null) {
             level.setName(levelUpdateDto.getName());
         }
@@ -53,8 +61,8 @@ public class LevelServiceImpl implements LevelService {
                 question.setLevel(level);
                 question.setText(questionDto.getText());
                 Question saved = questionRepository.save(question);
-                HashSet <Answer> answers = new HashSet<>();
-                for (AnswerDto answerDto: questionDto.getAnswers()) {
+                HashSet<Answer> answers = new HashSet<>();
+                for (AnswerDto answerDto : questionDto.getAnswers()) {
                     Answer answer = new Answer();
                     answer.setQuestion(saved);
                     answer.setText(answerDto.getAnswerText());
@@ -68,22 +76,17 @@ public class LevelServiceImpl implements LevelService {
         }
         if (levelUpdateDto.getSuggestions() != null) {
             //delete old suggestions
-            for (Suggestion suggestion: level.getSuggestions()) {
-                for (Form form: suggestion.getForms()
-                     ) {
-                    form.removeSuggestion(suggestion);
-                    formRepository.save(form);
-                }
+            for (Suggestion suggestion : level.getSuggestions()) {
                 suggestionRepository.deleteById(suggestion.getId());
             }
             // add new
-            for (SuggestionDto suggestionDto: levelUpdateDto.getSuggestions()) {
-                for (String link: suggestionDto.getLinks()){
-                Suggestion suggestion = new Suggestion();
-                suggestion.setLevel(level);
-                suggestion.setLink(link);
-                suggestionRepository.save(suggestion);
-                newSuggestions.add(suggestion);
+            for (SuggestionDto suggestionDto : levelUpdateDto.getSuggestions()) {
+                for (String link : suggestionDto.getLinks()) {
+                    Suggestion suggestion = new Suggestion();
+                    suggestion.setLevel(level);
+                    suggestion.setLink(link);
+                    suggestionRepository.save(suggestion);
+                    newSuggestions.add(suggestion);
                 }
             }
         }

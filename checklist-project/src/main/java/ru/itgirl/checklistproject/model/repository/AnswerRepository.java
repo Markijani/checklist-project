@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 import ru.itgirl.checklistproject.model.entity.Answer;
 import ru.itgirl.checklistproject.model.entity.Question;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository

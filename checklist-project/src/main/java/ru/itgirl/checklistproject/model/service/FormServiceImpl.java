@@ -40,12 +40,12 @@ public class FormServiceImpl implements FormService {
             newAnswers.add(answerRepository.findById(answerID).orElseThrow(() -> new NoSuchElementException("This answer does not exist")));
         }
         Form form = formRepository.findByUid(formUpdateDto.getUid()).orElseThrow(() -> new NoSuchElementException("Form with this uid does not exist"));
-        Set<Suggestion> suggestions = form.getSuggestions();
-        Set<Level> levels = form.getLevels();
+        Set<Level> completedLevels = form.getCompletedLevels();
+        Set<Level> weakLevels = form.getWeakLevels();
         for (Level level : levelRepository.findAll()) {
             List<Answer> answersLevel = newAnswers.stream().filter(answer -> answer.getQuestion().getLevel().equals(level)).toList();
             if (!answersLevel.isEmpty()) {
-                levels.add(level);
+                completedLevels.add(level);
                 double correctAnswers = 0;
                 for (Answer answer : answersLevel) {
                     if (answer.isCorrect()) {
@@ -63,12 +63,12 @@ public class FormServiceImpl implements FormService {
                     }
                 }
                 if (correctAnswers / answersLevel.size() <= 0.4) {
-                    suggestions.addAll(level.getSuggestions());
+                    weakLevels.add(level);
                 }
             }
         }
-        form.setSuggestions(suggestions);
-        form.setLevels(levels);
+        form.setWeakLevels(weakLevels);
+        form.setCompletedLevels(completedLevels);
         return convertEntityToDtoAdmin(formRepository.save(form));
     }
 
@@ -102,18 +102,22 @@ public class FormServiceImpl implements FormService {
 
     private FormDto convertEntityToDtoAdmin(Form form) {
         List<LevelDtoForm> levelDtos = null;
-        Set<String> weakTopics = null;
-        if (form.getLevels() != null) {
-            levelDtos = form.getLevels().stream().map(level ->
+        Set<LevelDtoForm> weakTopics = null;
+        if (form.getCompletedLevels() != null) {
+            levelDtos = form.getCompletedLevels().stream().map(level ->
                     LevelDtoForm.builder()
                             .name(level.getName())
                             .id(level.getId())
                             .build()).collect(Collectors.toList());
         }
-        if (form.getSuggestions() != null) {
-            weakTopics = form.getSuggestions().stream().map(suggestion ->
-                    suggestion.getLevel().getName()).collect(Collectors.toSet());
+        if (form.getWeakLevels() != null) {
+            weakTopics = form.getWeakLevels().stream().map(level ->
+                    LevelDtoForm.builder()
+                            .name(level.getName())
+                            .id(level.getId())
+                            .build()).collect(Collectors.toSet());
         }
+
         return FormDto.builder()
                 .id(form.getId())
                 .uid(form.getUid())
@@ -131,15 +135,15 @@ public class FormServiceImpl implements FormService {
         List<LevelDtoForm> levelDtos = null;
         List<SuggestionDto> suggestions = null;
         List<WrongAnswerDto> wrongAnswers;
-        if (form.getLevels() != null) {
-            levelDtos = form.getLevels().stream().map(level ->
+        if (form.getCompletedLevels() != null) {
+            levelDtos = form.getCompletedLevels().stream().map(level ->
                     LevelDtoForm.builder()
                             .name(level.getName())
                             .id(level.getId())
                             .build()).collect(Collectors.toList());
         }
-        if (form.getLevels() != null) {
-            suggestions = form.getLevels().stream().map(level ->
+        if (form.getCompletedLevels() != null) {
+            suggestions = form.getCompletedLevels().stream().map(level ->
                     SuggestionDto.builder()
                             .title(level.getName())
                             .links(level.getSuggestions().stream().map(Suggestion::getLink).collect(Collectors.toList()))
