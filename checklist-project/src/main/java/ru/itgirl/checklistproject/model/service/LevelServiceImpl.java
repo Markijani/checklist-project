@@ -3,14 +3,8 @@ package ru.itgirl.checklistproject.model.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.itgirl.checklistproject.model.dto.*;
-import ru.itgirl.checklistproject.model.entity.Answer;
-import ru.itgirl.checklistproject.model.entity.Level;
-import ru.itgirl.checklistproject.model.entity.Question;
-import ru.itgirl.checklistproject.model.entity.Suggestion;
-import ru.itgirl.checklistproject.model.repository.AnswerRepository;
-import ru.itgirl.checklistproject.model.repository.LevelRepository;
-import ru.itgirl.checklistproject.model.repository.QuestionRepository;
-import ru.itgirl.checklistproject.model.repository.SuggestionRepository;
+import ru.itgirl.checklistproject.model.entity.*;
+import ru.itgirl.checklistproject.model.repository.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,6 +16,7 @@ public class LevelServiceImpl implements LevelService {
     private final QuestionRepository questionRepository;
     private final SuggestionRepository suggestionRepository;
     private final AnswerRepository answerRepository;
+    private final FormRepository formRepository;
 
     @Override
     public List<LevelDto> getAllLevelsAndQuestions() {
@@ -53,12 +48,17 @@ public class LevelServiceImpl implements LevelService {
             level.setName(levelUpdateDto.getName());
         }
         if (levelUpdateDto.getQuestions() != null) {
-            for (Question question : levelUpdateDto.getQuestions()) {
+            for (QuestionDto questionDto : levelUpdateDto.getQuestions()) {
+                Question question = new Question();
                 question.setLevel(level);
+                question.setText(questionDto.getText());
                 Question saved = questionRepository.save(question);
                 HashSet <Answer> answers = new HashSet<>();
-                for (Answer answer: question.getAnswers()) {
+                for (AnswerDto answerDto: questionDto.getAnswers()) {
+                    Answer answer = new Answer();
                     answer.setQuestion(saved);
+                    answer.setText(answerDto.getAnswerText());
+                    answer.setCorrect(answerDto.isCorrect());
                     answers.add(answer);
                     answerRepository.save(answer);
                 }
@@ -69,13 +69,22 @@ public class LevelServiceImpl implements LevelService {
         if (levelUpdateDto.getSuggestions() != null) {
             //delete old suggestions
             for (Suggestion suggestion: level.getSuggestions()) {
+                for (Form form: suggestion.getForms()
+                     ) {
+                    form.removeSuggestion(suggestion);
+                    formRepository.save(form);
+                }
                 suggestionRepository.deleteById(suggestion.getId());
             }
             // add new
-            for (Suggestion newSuggestion: levelUpdateDto.getSuggestions()) {
-                newSuggestion.setLevel(level);
-                suggestionRepository.save(newSuggestion);
-                newSuggestions.add(newSuggestion);
+            for (SuggestionDto suggestionDto: levelUpdateDto.getSuggestions()) {
+                for (String link: suggestionDto.getLinks()){
+                Suggestion suggestion = new Suggestion();
+                suggestion.setLevel(level);
+                suggestion.setLink(link);
+                suggestionRepository.save(suggestion);
+                newSuggestions.add(suggestion);
+                }
             }
         }
         level.setQuestions(newQuestions);
@@ -103,7 +112,8 @@ public class LevelServiceImpl implements LevelService {
                         .collect(Collectors.toList()))
                 .suggestions(level.getSuggestions().stream()
                         .map(suggestion -> SuggestionDto.builder()
-                                .links(level.getSuggestions().stream().map(Suggestion::getName).collect(Collectors.toList()))
+                                .title(level.getName())
+                                .links(level.getSuggestions().stream().map(Suggestion::getLink).collect(Collectors.toList()))
                                 .build())
                         .collect(Collectors.toList()))
                 .build();

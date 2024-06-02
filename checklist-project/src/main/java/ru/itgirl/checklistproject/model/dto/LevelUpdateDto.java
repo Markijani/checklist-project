@@ -16,6 +16,6 @@ import java.util.List;
 public class LevelUpdateDto {
     private Long id;
     private String name;
-    private List<Question> questions;
-    private List<Suggestion> suggestions;
+    private List<QuestionDto> questions;
+    private List<SuggestionDto> suggestions;
 }

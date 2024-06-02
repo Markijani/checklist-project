@@ -51,4 +51,9 @@ public class Form {
 
     @OneToMany(mappedBy = "form")
     private List<WrongAnswer> wrongAnswers;
+
+    public void removeSuggestion(Suggestion suggestion){
+        this.getSuggestions().remove(suggestion);
+        suggestion.getForms().remove(this);
+    }
 }
