@@ -42,10 +42,6 @@ get-запрос form/uidUser?uid=sdfghjklhjkl - анкеты с токеном 
     "groupNum": 82,
     "completedLevels": [
         {
-            "id": 2,
-            "name": "CSS"
-        },
-        {
             "id": 1,
             "name": "Основы HTML"
         }
@@ -94,46 +90,6 @@ post-запрос /form/create - в headers - content type: application/json
     "surname": "Иванова",
     "groupNum": 82,
     "email": "masha@gmail.com"           
-}
-```
-
-## Пример Json для отправки на бэк при обновлении Анкеты с использованием текста вопросов и ответов
-put-запрос /form/update в headers - content type: application/json
-
-Этот запрос медленнее, чем по id ответов. Если получится без него, то не стоит его использовать.
-
-Кроме того, если хоть один лишний знак будет в ответе (знак препинания или буква другого регистра) - то в базе он не найдется (вернется ошибка - ответ не найден, см. ниже).
-
-Выдает ответ с кодом 200 и json c полем message: "Form with this uid does not exist", если формы не существует
-Выдает ответ с кодом 200 и json c полем message: "This answer does not exist", если ответа не существует
-
-Добавляются ответы по теме "Позиционирование"
-
-```json
-{
-  "uid": "yuiop[]l",
-  "answers": [
-    {
-      "question": "Какое свойство CSS используется для задания позиции элемента в HTML документе?",
-      "answerText": "position"
-    },
-    {
-      "question": "Какой из следующих вариантов определяет, что элемент будет абсолютно позиционирован относительно его ближайшего позиционированного предка?",
-      "answerText": "position: absolute"
-    },
-    {
-      "question": "Какие значения можно использовать для свойства position в CSS?",
-      "answerText": "top, left, right, bottom"
-    },
-    {
-      "question": "Какое свойство CSS используется для задания позиции элемента в CSS Grid?",
-      "answerText": "grid-column"
-    },
-    {
-      "question": "Как можно выровнять элементы в адаптивной вёрстке?",
-      "answerText": "Использовать CSS Grid"
-    }
-  ]
 }
 ```
 
