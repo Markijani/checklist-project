@@ -13,6 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class SuggestionDto {
     private String title;
-    private List<String> links;
+    private List<LinkDto> links;
     private List<WrongAnswerDto> wrongAnswers;
 }

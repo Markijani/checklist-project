@@ -134,7 +134,6 @@ public class FormServiceImpl implements FormService {
     private FormDtoUser convertEntityToDtoUser(Form form) {
         List<LevelDtoForm> levelDtos = null;
         List<SuggestionDto> suggestions = null;
-        List<WrongAnswerDto> wrongAnswers;
         if (form.getCompletedLevels() != null) {
             levelDtos = form.getCompletedLevels().stream().map(level ->
                     LevelDtoForm.builder()
@@ -142,11 +141,16 @@ public class FormServiceImpl implements FormService {
                             .id(level.getId())
                             .build()).collect(Collectors.toList());
         }
+        List<LinkDto> links = null;
         if (form.getCompletedLevels() != null) {
             suggestions = form.getCompletedLevels().stream().map(level ->
                     SuggestionDto.builder()
                             .title(level.getName())
-                            .links(level.getSuggestions().stream().map(Suggestion::getLink).collect(Collectors.toList()))
+                            .links(level.getSuggestions().stream().map(link -> LinkDto.builder()
+                                    .link(link.getLink())
+                                    .id(link.getId())
+                                    .build()
+                            ).collect(Collectors.toList()))
                             .wrongAnswers(form.getWrongAnswers().stream().filter(answer -> Objects.equals(answer.getTopicId(), level.getId()))
                                     .map(wrongAnswer ->
                                             WrongAnswerDto.builder()

@@ -74,20 +74,19 @@ public class LevelServiceImpl implements LevelService {
                 newQuestions.add(questionRepository.save(saved));
             }
         }
-        if (levelUpdateDto.getSuggestions() != null) {
+        if (levelUpdateDto.getSuggestion() != null) {
             //delete old suggestions
             for (Suggestion suggestion : level.getSuggestions()) {
                 suggestionRepository.deleteById(suggestion.getId());
             }
             // add new
-            for (SuggestionDto suggestionDto : levelUpdateDto.getSuggestions()) {
-                for (String link : suggestionDto.getLinks()) {
-                    Suggestion suggestion = new Suggestion();
-                    suggestion.setLevel(level);
-                    suggestion.setLink(link);
-                    suggestionRepository.save(suggestion);
-                    newSuggestions.add(suggestion);
-                }
+            SuggestionDto suggestionDto = levelUpdateDto.getSuggestion();
+            for (LinkDto linkDto : suggestionDto.getLinks()) {
+                Suggestion suggestion = new Suggestion();
+                suggestion.setLevel(level);
+                suggestion.setLink(linkDto.getLink());
+                suggestionRepository.save(suggestion);
+                newSuggestions.add(suggestion);
             }
         }
         level.setQuestions(newQuestions);
@@ -97,6 +96,12 @@ public class LevelServiceImpl implements LevelService {
     }
 
     private LevelDto convertEntityToDto(Level level) {
+        List<LinkDto> links = null;
+        if (level.getSuggestions() != null) {
+            links = level.getSuggestions().stream().map(link -> LinkDto.builder()
+                    .link(link.getLink())
+                    .id(link.getId()).build()).collect(Collectors.toList());
+        }
         return LevelDto.builder()
                 .id(level.getId())
                 .name(level.getName())
@@ -113,12 +118,10 @@ public class LevelServiceImpl implements LevelService {
                                         .collect(Collectors.toList()))
                                 .build())
                         .collect(Collectors.toList()))
-                .suggestions(level.getSuggestions().stream()
-                        .map(suggestion -> SuggestionDto.builder()
-                                .title(level.getName())
-                                .links(level.getSuggestions().stream().map(Suggestion::getLink).collect(Collectors.toList()))
-                                .build())
-                        .collect(Collectors.toList()))
+                .suggestion(SuggestionDto.builder()
+                        .title(level.getName())
+                        .links(links)
+                        .build())
                 .build();
     }
 }
