@@ -113,6 +113,11 @@ put-запрос /form/updateAnswId в headers - content type: application/json
   ]
 }
 ```
+## Удаление результатов
+put-запрос /form/removeResult/{id} - обнулит пройденные темы, плохо пройденные темы и неправильные ответы
+
+Чтобы удалить анкету с id 9 надо отправить запрос /form/removeResult/9
+Удаляем по id, но по UID
 
 # Темы
 
