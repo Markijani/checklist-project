@@ -50,4 +50,9 @@ public class FormController {
     void deleteForm(@PathVariable("id") Long id) {
         formService.deleteForm(id);
     }
+
+    @PutMapping("/form/removeResult/{id}")
+    void removeResult(@PathVariable("id") Long id) {
+        formService.removeResult(id);
+    }
 }

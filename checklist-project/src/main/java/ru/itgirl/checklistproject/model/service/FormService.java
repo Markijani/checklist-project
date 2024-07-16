@@ -21,4 +21,6 @@ public interface FormService {
     FormDtoUser getFormByUidUser(String uid);
 
     void deleteForm(Long id);
+
+    void removeResult(Long id);
 }

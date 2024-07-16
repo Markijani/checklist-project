@@ -2,6 +2,7 @@ package ru.itgirl.checklistproject.model.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.itgirl.checklistproject.model.dto.*;
 import ru.itgirl.checklistproject.model.entity.*;
 import ru.itgirl.checklistproject.model.repository.*;
@@ -98,6 +99,15 @@ public class FormServiceImpl implements FormService {
     @Override
     public void deleteForm(Long id) {
         formRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void removeResult(Long id) {
+        Form form = formRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Form with this id does not exist"));
+        wrongAnswerRepository.deleteByForm(form);
+        form.setCompletedLevels(null);
+        form.setWeakLevels(null);
+        formRepository.save(form);
     }
 
     private FormDto convertEntityToDtoAdmin(Form form) {

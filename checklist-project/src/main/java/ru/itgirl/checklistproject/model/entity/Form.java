@@ -52,6 +52,7 @@ public class Form {
             inverseJoinColumns = @JoinColumn(name = " level_id", referencedColumnName = "id"))
     private Set<Level> weakLevels;
 
-    @OneToMany(mappedBy = "form")
+    @OneToMany(mappedBy = "form",
+            orphanRemoval=true)
     private List<WrongAnswer> wrongAnswers;
 }
